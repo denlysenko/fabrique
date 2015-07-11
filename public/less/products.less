@@ -1,0 +1,180 @@
+.new-products,
+.featured-products {
+	.make-row();
+	padding-bottom: 60px;
+
+	h3 {
+			padding-left: 15px;
+		}
+
+	.product-unit {
+		.make-sm-column(6);
+		.make-md-column(3);
+		margin-top: 1.2em;
+	}
+}
+
+
+
+.product-title,
+.product-data {
+	.make-row();
+	
+	.product-photo,
+	.product-description {
+		.make-sm-column(6);
+	}
+
+	h4,
+	.price {
+		.make-xs-column(6);
+	}
+}
+
+.product-data {
+	padding-bottom: 30px;
+}
+
+.product-title {
+	.price {
+		&:extend(h4);
+	}
+}
+
+.product-photo > img {
+	width: 100%;
+	height: 19.35em;
+}
+
+.photo-mini {
+	.make-row();
+	margin: 20px 0 0;
+
+	.thumbnail {
+		.make-xs-column(6);
+		position: relative;
+		padding: 0;
+	}
+
+	.thumbnail-hover {
+		position: absolute;
+		top:0;
+		left:0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255,255,255,.3) url(../images/icons/magnifying.png) no-repeat center center;
+		z-index: 555;
+	}
+}
+
+.product-description {
+
+	@media(max-width: @screen-sm-min) {
+		margin-top: 10px;
+	}
+
+	p {
+		height: 4em;
+		overflow: hidden;
+
+		&:first-of-type {
+			height: 8.7em;
+		}
+	}
+
+	.quantity {
+		.make-row();
+		padding-left: 15px;
+		margin-bottom: 1em;
+
+		.select {
+			.make-sm-column(5);
+			padding: 0 6px 0 0;
+		}
+
+	.total {
+		display: block;
+	}		
+	}
+
+	.btn {
+		margin-right: 1em;
+
+		@media(max-width: @screen-sm-min) {
+			margin-bottom: 10px;
+		}
+	}
+}
+
+.total {
+	.make-sm-column(6);
+
+	@media(max-width: @screen-sm-min) {
+		padding-left: 0;
+		margin-top: 20px;
+	}
+
+	span {
+		&:extend(h4);
+		display: inline;
+		font-size: 18px;
+	}
+}
+
+.product-details {
+	padding-bottom: 30px;
+}
+
+.related-products {
+	h4 {
+		margin-top: -10px;
+	}
+	.product-unit {
+		border: 1px solid #cdc5bb;
+		background: rgba(0,0,0,.08);
+		margin-bottom: 2em;
+		padding: 5px;
+		position: relative;
+
+		&:after {
+			content: '';
+			border-top: 1px dotted @text-color;
+			display: block;
+			height: 1px;
+			width: 100%;
+			position: absolute;
+			bottom: -1.2em;
+			left: 0;
+		}
+	}
+}
+
+#dataSheet .table,
+#reviews .table {
+	border: none;
+}
+
+#reviews th {
+	padding-right: 20px;
+}
+
+@media(max-width:@screen-md-min) {
+	.related-products {
+		.product-unit img {
+			height: auto;
+		}
+	}
+}
+
+@media (max-width: @screen-sm-min) {
+	.product-unit {
+		.thumbnail {
+			img {
+				height: auto;
+			}
+		}
+	}
+	.product-photo > img {
+		height: auto;
+	}
+}

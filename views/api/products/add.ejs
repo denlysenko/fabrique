@@ -1,0 +1,61 @@
+<%- include('../blocks/header')%>
+<div class="content">
+    <h3>Add new product</h3>
+    <hr>
+    <%- include('../../messages')%>
+    <form action="/api/products/add" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label>Product Code</label>
+        <input type="text" name="code" class="form-control" placeholder="Product Code">
+      </div>
+      <div class="form-group">
+        <label>Product Category</label>
+       <div class="select dropdown product">
+        <span data-toggle="dropdown">
+          <input type="text" placeholder="Product Category" class="form-control" name="category">
+        </span>
+        <ul class="dropdown-menu">
+          <li><a href="#">Flooring</a></li>
+          <li><a href="#">Curtains</a></li>
+          <li><a href="#">Bedding</a></li>
+        </ul>
+       </div> 
+    </div>
+    <div class="form-group">
+      <label>Product Title</label>
+      <input type="text" name="title" class="form-control" placeholder="Product Title">
+    </div>
+    <div class="form-group">
+      <label>Product Description</label>
+      <textarea name="description" class="form-control" placeholder="Product Description" rows="10"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Product Information</label>
+      <textarea name="info" class="form-control" placeholder="Product Information" rows="10"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Data Sheet</label>
+      <div class="fields">
+        <input type="text" class="form-control" placeholder="Feature" name="feature">
+        <textarea class="form-control" placeholder="Characteristic" name="characteristic"></textarea>
+      </div>
+      <button type="button" class="btn btn-default new-field">New Feature</button>
+    </div>
+    <div class="form-group">
+      <label>Product Price</label>
+      <input type="number" step="0.01" name="price" class="form-control" placeholder="Product Price £" min="0">
+    </div>
+    <div class="form-group">
+      <label>Product Photo</label>
+      <div class="fields">
+        <input type="file" name="photo" class="form-control">
+      </div>
+      <button type="button" class="btn btn-default new-field">New Photo</button>
+    </div>
+    <hr>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Add New Product</button>
+    </div>
+  </form>
+</div>
+<%- include('../blocks/footer')%>

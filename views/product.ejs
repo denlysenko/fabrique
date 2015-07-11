@@ -1,0 +1,155 @@
+<%- include('blocks/header')%>
+<div class="content">
+	<ol class="breadcrumb">
+    <li>
+      <a href="/">Home</a>
+    </li>
+    <li class="active"><%= product.title %></li>
+  </ol>
+  <div class="row">
+		<main>
+	    <div class="product-title  <% if(product.sale !== 0){ %> sale-<%= product.sale %><% } %>">
+	      <h4><%= product.title %></h4>
+	      <span class="price"><%= currency %> <%= (product.price*rate).toFixed(2) %></span>
+	    </div>
+	    <hr>
+	    <div class="product-data">
+	      <div class="product-photo">
+	        <img src="<%= images[0].image %>" alt="<%= product.title %>" class="img-responsive ">
+	        <div class="photo-mini">
+	        <% images.forEach(function(image){ %>
+	          <a href="<%= image.image %>" height="502" width="750" class="thumbnail" data-toggle="lightbox" data-gallery="lightbox" data-title="<%= product.title %>"><img src="<%= image.thumb %>" alt="<%= product.title %>"></a>
+					<% }) %>
+	      	</div>
+	      </div>
+	      <div class="product-description">
+	        <p><%= product.desc %></p>
+	        <p><a href="#read-more">More details</a></p>
+	        <div class="quantity">
+	          <div class="select dropdown">
+	            <span data-toggle="dropdown">
+	              <input type="text" value="Quantity: 1" class="form-control">
+	            </span>
+	            <ul class="dropdown-menu">
+	              <li><a href="#">Quantity: 1</a></li>
+	              <li><a href="#">Quantity: 2</a></li>
+	              <li><a href="#">Quantity: 3</a></li>
+	              <li><a href="#">Quantity: 4</a></li>
+	              <li><a href="#">Quantity: 5</a></li>
+	            </ul>
+	           </div> 
+	          <span class="total">Total: <span class="curr"><%= currency %> <span class="pr"><%= (product.price*rate).toFixed(2) %></span></span></span>
+	        </div>
+		      <a href="/product/basket/<%= product.code %>" class="btn btn-bag" role="button" data-action="add-to-basket">Add to basket</a>
+		      <a href="/wishlist/<%= product.code %>" class="btn btn-default" data-action="add-to-wishlist" role="button">Add to wishlist</a>
+	      </div>
+	    </div>
+	    <hr>
+	    <div class="product-details">
+	      <h4 id="read-more">More details</h4>
+	      <div role="tabpanel">
+	       <ul class="nav nav-tabs">
+	          <li class="active"><a href="#moreInfo" data-toggle="tab">More info</a></li>
+	          <li><a href="#dataSheet" data-toggle="tab">Data sheet</a></li>
+	          <li><a href="#reviews" data-toggle="tab">Reviews <span class="review">(<%= reviews.length %>)</span></a></li>
+	        </ul>
+	        <div class="tab-content">
+	          <div id="moreInfo" class="tab-pane active">
+	            <%= product.info %>
+	          </div>
+	          <div id="dataSheet" class="tab-pane">
+	          	<% if(features.length){ %>
+	            <table class="table">
+	              <thead>
+	                <tr>
+	                  <th>Feature</th>
+	                  <th>Characteristics</th>
+	                </tr>
+	              </thead>
+	              <tbody class="table-striped">
+	              	<% features.forEach(function(feature){ %>
+	                <tr>
+	                  <td><%= feature.feature %></td>
+	                  <td><%= feature.characteristic %></td>
+	                </tr>
+	                <% })} %>
+	              </tbody>
+	            </table>
+	          </div>
+	         <div id="reviews" class="tab-pane">
+	         	<% if(reviews.length) { %>
+	          <div class="table-responsive">
+	            <table class="table">
+	              <thead>
+	                <tr>
+	                  <th>Username</th>
+	                  <th>Review Date</th>
+	                  <th>Rate</th>
+	                  <th>Review</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              	<% reviews.forEach(function(review) { %>
+	                <tr>
+	                  <td class="user"><%= review.name %></td>
+	                  <td class="review-date"><%= review.added %></td>
+	                  <td class="rate"><%= review.rate %></td>
+	                  <td><%= review.review %></td>
+	                </tr>
+	                <% }) %>
+	              </tbody>
+	            </table>
+	          </div>
+	          <% } %>
+	          <% if(locals.user) { %>
+	          <h4>Write Review</h4>
+	          <form action="/product/review/<%= product.code %>" method="post">
+	          	<div class="form-group">
+	          		<input type="text" placeholder="Name" class="form-control" name="name">
+	          	</div>
+	          	<div class="form-group">
+	          		<div class="select dropdown">
+			            <span data-toggle="dropdown">
+			              <input type="text" placeholder="Rate" class="form-control" name="rate">
+			            </span>
+			            <ul class="dropdown-menu">
+			              <li><a href="#">1</a></li>
+			              <li><a href="#">2</a></li>
+			              <li><a href="#">3</a></li>
+			              <li><a href="#">4</a></li>
+			              <li><a href="#">5</a></li>
+			            </ul>
+			          </div>
+	          	</div>
+	          	<div class="form-group">
+	          		<textarea name="review" rows="10" placeholder="Review" class="form-control"></textarea>
+	          	</div>
+	          	<div class="form-group">
+	          		<button type="submit" class="btn btn-default">Add Review</button>
+	          	</div>
+	          </form>
+						<% } %>
+	        </div>
+	      </div>
+	    </div>
+	    </div>
+	    <hr>
+	  </main>
+	  <aside class="related-products">
+      <h4>You may like <i class="offer"></i></h4>
+      <% if(related.length) { %>
+      	<% related.forEach(function(product) { %>
+	      <div class="product-unit">
+	        <a href="/product/<%= product.code %>" class="thumbnail">
+	          <img src="<%= product.thumb %>" alt="<%= product.title %>">
+	        </a>
+	        <div class="caption">
+	          <h4><a href="/product/<%= product.code %>"><%= product.title %></a> <span class="price"><%= currency %> <%= (product.price*rate).toFixed(2) %></span></h4>
+	        </div>
+	      </div>
+	    <% })} %>
+    </aside>
+	</div>
+	<hr>
+</div>
+<%- include('blocks/footer')%>

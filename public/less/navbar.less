@@ -1,0 +1,56 @@
+.navbar-default {
+	border: none;
+	font-size: 18px;
+	text-transform: uppercase; 
+	margin: 45px 0 0;
+
+	.navbar-nav {
+		> li > a {
+			padding-left: 0;
+		}
+
+		> li > a {
+			&:hover {
+        text-decoration: underline;
+      }
+		}
+		> .active > a {
+      &,
+      &:hover{
+        text-decoration: none;
+      }
+    }
+	}
+}
+
+.dropdown-menu {
+	padding: 0;
+	border-top: 1px solid #cdc5bb;
+	> li {
+		border-bottom: 1px solid #cdc5bb;
+		
+	}
+}
+
+.caret {
+	border: none;
+}
+
+.navbar-form {
+	margin-top: 5px;
+
+	.input-group {
+		width: 100%;
+
+		input {
+			background: rgba(0,0,0,.08);
+			margin-bottom: 0;
+		}
+	}
+}
+
+@media (min-width:@screen-md-min) {
+	#main-nav ul.navbar-nav {
+		padding-left: 0;
+	}
+}

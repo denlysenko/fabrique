@@ -1,0 +1,133 @@
+body {
+	background: url('@{bg-path}body_bg.png');
+	padding: 50px 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	margin: 0 0 15px;
+	text-transform: uppercase;
+
+	small {
+		display: block;
+	}
+}
+
+header,
+.content,
+footer {
+	padding: 40px;
+	background: @content-bg;
+}
+
+.content {
+	margin: 15px 0;
+}
+
+hr {
+	border: none;
+	height: 2px;
+	background: url('@{bg-path}hr.png');
+	margin:0 0 20px;
+}
+
+.breadcrumb {
+	padding-left: 0;
+	>li > a {
+		color: @text-color;
+		text-transform: capitalize;
+
+		&:hover {
+			color: @link-hover-color;
+		}
+	}
+}
+
+main {
+	.make-md-column(9);
+}
+
+aside {
+	.make-md-column(3);
+}
+
+@media(max-width:@screen-md-min) {
+	main {
+		margin-bottom: 1.5em;
+	}
+}
+
+.nav-tabs {
+	li:first-child {
+		> a {
+			padding-left: 0;
+		}
+	}
+
+	> li > a:hover {
+		text-decoration: underline;
+	}
+
+	> li.active {
+		> a {
+			text-decoration: underline;;
+		}
+	}
+	@media(max-width: @screen-xs-min) {
+		>li:last-child > a {
+			padding-left: 0;
+		}
+	}
+}
+
+.contact {
+	padding-bottom: 30px;
+	address {
+		margin-top: 3.3em;
+	}
+}
+
+.error-message {
+	.make-row();
+	padding-bottom: 5em;
+
+	.btn {
+		margin-bottom: 3em;
+	}
+}
+
+.table-responsive {
+	@media(min-width: @screen-sm-min) {
+		overflow: visible; 
+	} 
+	@media(max-width: @screen-sm-min) {
+		overflow-y: visible;
+	}
+}
+
+.tooltip {
+	white-space: pre-wrap;
+}
+
+.tooltip-inner {
+	border-radius: 3px;
+}
+
+dl {
+	dd {
+		margin: 10px 0 0 10px;
+	}
+}
+
+.bg-success,
+.bg-danger,
+.bg-info {
+	padding: 10px;
+}
+
+.helper {
+	margin-bottom: 10px;
+}
+

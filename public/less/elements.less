@@ -1,0 +1,144 @@
+.product-unit {
+	.caption {
+		h4 {
+			font-size: @font-size-base;
+			line-height: 1.2em;
+			color: @brand-primary;
+			font-weight: bold;
+			text-transform: capitalize;
+			height: 2.3em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			position: relative;
+			padding-right: 4em;
+		}
+
+		p {
+			height: 6em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+
+	.thumbnail {
+		img {
+			height: 150px;
+			width: 100%;
+		}
+	}
+}
+
+.price {
+	position: absolute;
+	top:0;
+	right:0;
+}
+
+.payment-types {
+	a {
+		display: inline-block;
+		margin-right: 5px;
+		width: 42px;
+		height: 32px;
+		background: url('@{icon-path}creditcards.png');
+
+		&:last-child {
+			margin-right:0;
+		}
+	}
+
+	.visa {
+		background-position: -42px 0;
+	}
+
+	.mastercard {
+		background-position: -84px 0;
+	}
+
+	.discovery {
+		background-position: -126px 0;
+	}
+}
+
+.social-links {
+	span {
+		&:extend(.btn-default);
+		display: inline-block;
+		line-height: 24px;
+		margin-top: 20px;
+
+		a {
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			margin: 4px 5px 0;
+			background: url('@{icon-path}social_links.png');
+
+			&:hover {
+				opacity: .7;
+			}
+
+			&:active {
+				opacity: .5;
+			}
+		}
+
+		[href*=twitter] {
+			background-position: -24px 0;
+		}
+	}
+}
+
+.sale-inline-20,
+.sale-inline-50 {
+	display: inline-block;
+	width: 32px;
+	height: 33px;
+	background: url('@{icon-path}sale.png');
+}
+
+.sale-inline-50 {
+	background-position: -32px 0;
+}
+
+.sale-50,
+.sale-20 {
+	position: relative;
+
+	&:before {
+		content: "";
+		&:extend(.sale-inline-20);
+		display: block;
+		position: absolute;
+		left: 5px;
+		bottom: 5px;
+	}
+}
+
+.sale-50:before {
+	&:extend(.sale-inline-50);
+}
+
+.offer {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background: url('@{icon-path}offer.png');
+}
+
+.alert {
+	position: relative;
+
+	&:before {
+		&:extend(.offer);
+		content: "";
+		position: absolute;
+		background: url('@{icon-path}alert.png');
+	}
+}
+
+.error {
+	&:extend(h3);
+	font-size: 72px;
+	color: #979695;
+}

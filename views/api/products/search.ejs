@@ -1,0 +1,39 @@
+<%- include('../blocks/header')%>
+<div class="content">
+  <h3>Search product</h3>
+  <hr>
+  <%- include('../../messages')%>
+  <form action="/api/products/search" method="get" class="search">
+    <div class="select dropdown form-group">
+      <span data-toggle="dropdown">
+        <input type="text" placeholder="Product Category" class="form-control" name="category">
+      </span>
+      <ul class="dropdown-menu">
+        <li><a href="#">Flooring</a></li>
+        <li><a href="#">Curtains</a></li>
+        <li><a href="#">Bedding</a></li>
+      </ul>
+    </div> 
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Search Product</button>
+    </div>
+  </form>   
+  <form action="/api/products/search" method="get" class="search">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Product Code" name="code">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Search Product</button>
+    </div>
+  </form>
+  <form action="/api/products/search" method="get" class="search">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Product Title" name="title">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Search Product</button>
+    </div>
+  </form>
+  <%- include('../blocks/search_results')%>
+</div>
+<%- include('../blocks/footer')%>

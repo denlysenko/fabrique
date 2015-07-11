@@ -1,0 +1,144 @@
+.btn {
+	font-family: @font-family-special;
+	text-transform: capitalize;
+
+	&,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      outline: 0;
+    }
+  }
+
+	&:hover,
+  &:focus,
+  &.focus {
+  	border: 1px solid @brand-primary;
+  	background-color: transparent;
+  }
+
+  &:active,
+  &.active {
+    .box-shadow(inset 0 0 5px rgba(0,0,0,.125));
+  }
+}
+
+.btn-default {
+	#gradient > .vertical(@start-color: rgba(247,243,238,.26);@end-color:rgba(169,162,154,.26));
+
+	&:hover {
+		#gradient > .vertical(@end-color: rgba(247,243,238,.26);@start-color:rgba(169,162,154,.26));
+	}
+}
+
+.btn-special {
+	background: url('@{bg-path}btn_special.png');
+	color: #333;
+	border: 1px solid #cdc5bb;
+
+	&:hover {
+		opacity: .8;
+	}
+
+	&:focus {
+		opacity: .6;
+		background: url('@{bg-path}btn_special.png');
+	}
+}
+
+.btn-forward {
+	&:extend(.btn-default all);
+	position: relative;
+	padding-right: 30px;
+
+	&:after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		margin-top: -10px;
+		right: 5px;
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		background: url('@{icon-path}btn_icons.png') 0 -20px;
+	}
+}
+
+.btn-back {
+	&:extend(.btn-forward all);
+	&:after {
+		background-position: 0 -40px;
+	}
+}
+
+.btn-bag {
+	&:extend(.btn-default all);
+	position: relative;
+	padding-left: 25px;
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		margin-top: -8px;
+		left: 2px;
+		display: inline-block;
+		width: 18px;
+		height: 16px;
+		background: url('@{icon-path}cart_mini.png');
+	}
+}
+
+.btn-update {
+	&:extend(.btn-bag all);
+	&:before {
+		background: url('@{icon-path}update.png');
+	}
+}
+
+.btn-search {
+	width: 20px;
+	height: 20px;
+	background: url('@{icon-path}btn_icons.png');
+	padding: 0;
+	border-radius: 4px;
+
+	
+  &:focus,
+  &.focus {
+  	border: 1px solid @brand-primary;
+  	opacity: .7;
+  	background: url('@{icon-path}btn_icons.png');
+  }
+}
+
+.btn-submit {
+	&:extend(.btn-search all);
+	background-position: 0 -20px;
+
+	&:focus,
+  &.focus {
+  	background-position: 0 -20px;
+  }
+}
+
+.btn-del {
+	width: 32px;
+	height: 32px;
+	background: url('@{icon-path}cancel.png');
+	border: 0;
+
+	&:hover {
+		border: 0;
+		opacity: .8;
+	}
+
+	&:focus,
+  &.focus {
+  	border: 0;
+  	opacity: .7;
+  	background: url('@{icon-path}cancel.png');
+  }
+}
+

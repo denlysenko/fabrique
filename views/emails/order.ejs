@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <style>
+      .content {
+        width: 80%;
+        margin: auto;
+        font: 16px 'Raleway', sans-serif;
+      }
+
+      h3 {
+        font-size: 24px;
+      }
+
+      table {
+        width: 100%;
+        border: 1px solid #000;
+        border-collapse: collapse;
+      }
+
+      th {
+        text-align: left;
+        text-transform: uppercase;
+        font-size: 18px;
+        background: #ccc;
+        border: 1px solid #000;
+      }
+
+      td {
+        padding: 5px 8px;
+        border: 1px solid #000;
+      }
+
+      dt {
+        font-weight: bold;
+      }
+
+      dd {
+        font-size: 19px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div>
+        <h3>Client: </h3>
+        <dl>
+          <dt>Name: </dt>
+          <dd><%= client.name %></dd>
+          <dt>Surname: </dt>
+          <dd><%= client.surname %></dd>
+          <dt>Email: </dt>
+          <dd><%= client.email %></dd>
+          <dt>Phone: </dt>
+          <dd><%= client.phone %></dd>
+          <dt>Payment: </dt>
+          <dd><%= client.payment %></dd>
+          <dt>Discont Number: </dt>
+          <dd><%= client.discount %></dd>
+          <dt>Delivery Address: </dt>
+          <dd><%= client.address %></dd>
+        </dl>
+      </div>
+      <h3>Order: </h3>
+        <table>
+          <thead>
+            <tr>
+              <th>code</th>
+              <th>product name</th>
+              <th>unit price</th>
+              <th>quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% products.forEach(function(product){ %>
+            <tr>
+              <td><%= product.code %></td>
+              <td><%= product.title %></td>
+              <td><%= product.currency %> <%= product.price %></td>
+              <td><%= product.qty %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>  
+      </div>  
+  </body>
+</html>  

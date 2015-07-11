@@ -1,0 +1,65 @@
+      
+      <footer>
+        <div class="row">
+          <div class="col">
+           <h4>Information</h4>
+           <ul class="menu">
+             <li <% if(page === '/contact') { %>class="active" <% } %>><a href="/contact">Contact us</a></li>
+             <li <% if(page === '/delivery') { %>class="active" <% } %>><a href="/delivery">Delivery</a></li>
+             <li <% if(page === '/returns') { %>class="active" <% } %>><a href="/returns">Returns</a></li>
+             <li <% if(page === '/terms') { %>class="active" <% } %>><a href="/terms">Terms and conditions</a></li>
+             <li <% if(page === '/privacy') { %>class="active" <% } %>><a href="/privacy">Privacy policy</a></li>
+             <li <% if(page === '/about') { %>class="active" <% } %>><a href="/about">About us</a></li>
+           </ul>
+          </div>
+          <div class="col">
+           <h4>Your account</h4>
+           <ul class="menu">
+             <li <% if(page === '/login') { %>class="active" <% } %>><a href="/login">Log in</a></li>
+             <li <% if(page === '/register') { %>class="active" <% } %>><a href="/register">Create an account</a></li>
+             <li <% if(page === '/order_history') { %>class="active" <% } %>><a href="/order_history" class="restrict">Order history</a></li>
+             <li <% if(page === '/wishlist') { %>class="active" <% } %>><a href="/wishlist" class="restrict">Wish list</a></li>
+             <li <% if(page === '/cancel_account') { %>class="active" <% } %>><a href="/cancel_account" data-action="cancel-account">Cancel account</a></li>
+             <li <% if(page === '/subscription') { %>class="active" <% } %>><a href="/subscribe">Newsletter subscription</a></li>
+           </ul>
+          </div>
+          <div class="col">
+           <h4>Contacts</h4>
+           <address>
+             Fabrique Fine Furnishing <br>
+             308-310 Somewhere Road, Devon,  PL9 1DD. <br><br>
+             Telephone: +44 01752 000000<br>
+               E-mail: mail@yoursite.com
+           </address>
+          </div>
+          <div class="col">
+           <h3>Free delivery!</h3>
+           <span>On all orders over £99.99</span>
+           <p>Valid on all our stocked items</p><br>
+           <p class="payment-types">
+             <a href="#" class="paypal"></a>
+             <a href="#" class="visa"></a>
+             <a href="#" class="mastercard"></a>
+             <a href="#" class="discovery"></a>
+           </p>
+          </div>
+        </div>
+      </footer>
+      <div class="under-footer">
+        <div class="col">
+          <h3>Fabrique <small>fine furnishing</small></h3>
+            ©2012 All Rights Reserved
+        </div>
+        <div class="social-links">
+          <span><a href="http://facebook.com"></a><a href="http://twitter.com"></a></span>
+        </div>
+      </div>
+    </div>
+    <script src="/js/jquery.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/plugins/jquery.tablesorter.min.js"></script>
+    <script src="/js/plugins/validator.min.js"></script>
+    <script src="/js/plugins/ekko-lightbox.js"></script>
+    <script src="/js/fabrique.min.js"></script>
+  </body>
+</html>

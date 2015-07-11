@@ -1,0 +1,18 @@
+<%- include('blocks/header')%>
+<div class="content">
+	<h3><%= title %></h3>
+	<hr>
+	<% if(results && results.length ) { %>
+	<ul>
+	<% results.forEach(function(result) { %>
+		<li>
+			<a href="/product/<%= result.code %>"><%= result.title %></a>
+		</li>
+	<% })} else { %>
+	<p class="bg-danger">
+		No data for your query
+	</p>
+	<% } %>
+</ul>
+</div>
+<%- include('blocks/footer')%>

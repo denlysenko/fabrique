@@ -1,0 +1,33 @@
+<%- include('../blocks/header', {title: title})%>
+<div class="content">
+  <h3>Remove Products from slider</h3>
+  <hr>
+  <%- include('../../messages')%>
+  <div class="table-responsive">
+    <table class="table edit">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Slogan</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+  <% results.forEach(function(result){%>
+      <tr>
+        <td><%= result.code %></td>
+        <td><%= result.title %></td>
+        <td><%= result.slogan %></td>
+        <td>
+          <a href="/api/slider/remove/<%= result.id %>" data-action="delete">Remove From Slider</a>
+        </td>
+      </tr>
+  <%})%>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+  
+</div>
+<%- include('../blocks/footer')%>  

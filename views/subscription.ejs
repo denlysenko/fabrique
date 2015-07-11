@@ -1,0 +1,20 @@
+<%- include('blocks/header')%>
+<div class="content clearfix">
+	<h3><%= title %></h3>
+	<hr>
+	<div class="row">
+		<div class="col-sm-8">
+			<div class="helper"></div>
+			<p>Subscribe to our free monthly newsletter and be the first to hear about our offers.</p>
+			<form action="/subscribe" method="post" class="user">
+			  <div class="input-group">
+			    <div>
+			      <input type="text" class="form-control" name="email" placeholder="Email..">
+			    </div>
+			    <button type="submit" class="btn btn-submit"></button>
+			  </div>
+			</form>
+		</div>
+	</div>
+</div>	
+<%- include('blocks/footer')%>
