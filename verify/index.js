@@ -29,7 +29,7 @@ exports.sendVerifyEmail = function(email, link, callback) {
 		function(token, callback) {
 			var tmpLink = link + '/verify/' + token;
 			transporter.sendMail({
-				from: 'donotreply@fabrique.me',
+				from: '',
 				to: email,
 				subject: 'Email Verification',
 				html: 'You are trying to register at Fabrique. Please, confirm your email address by clicking on the following link <a href="' + tmpLink + '">' + tmpLink + '</a>. This link will be valid for 2 hours.'
@@ -50,7 +50,7 @@ exports.confirm = function(token, callback) {
 		},
 		function(rows, callback) {
 			transporter.sendMail({
-				from: 'donotreply@fabrique.me',
+				from: '',
 				to: rows[0].email,
 				subject: 'Registration Confirmation',
 				html: 'Thank you for registration at Fabrique.'
