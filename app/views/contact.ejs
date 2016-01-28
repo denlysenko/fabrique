@@ -1,0 +1,59 @@
+<%- include('blocks/header')%>
+<div class="content">
+  <ol class="breadcrumb">
+    <li>
+      <a href="/">Home</a>
+    </li>
+    <li class="active">Contact Us</li>
+  </ol>
+  <div class="contact">
+    <main>
+      <h4><%= title %></h4>
+      <hr>
+      <div class="helper"></div>
+      <form action="/contact" name="contact-form" method="post" class="user">
+        <div class="form-group">
+          <div>
+            <input type="text" class="form-control" name="name" placeholder="First Name..">
+          </div>
+          <div>
+            <input type="text" class="form-control" name="tel-num" placeholder="Telephone..">
+          </div>
+        </div>
+        <div class="form-group">
+          <div><input type="text" class="form-control" name="last-name" placeholder="Surname.."> </div>
+          <div>
+            <input type="text" class="form-control" name="acc-number" placeholder="Acc number(if existing customer)..">
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <input type="text" class="form-control" name="email" placeholder="Email..">
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="subscribe" checked>Subscribe To Newsletter
+            </label>
+          </div>
+        </div>
+        <div class="message">
+          <textarea name="message" rows="10" class="form-control" placeholder="Message.."></textarea>
+        </div>
+        <button type="submit" class="btn btn-forward">Submit</button>
+      </form>
+    </main>
+    <aside>
+      <h4>Contact details</h4>
+      <hr>
+      <img src="/app/lib/modules/images/others/office.png" alt="" class="img-responsive">
+      <address>Fabrique Fine Furnishing <br>
+        308-310 Somewhere Road, Devon,  PL9 1DD. <br>
+        Telephone: +44 01752 000000<br>
+          E-mail: mail@yoursite.com
+        </address>
+    </aside>
+  </div>
+  <hr>
+</div>
+<%- include('blocks/footer')%>
+

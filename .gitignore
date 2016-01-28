@@ -1,4 +1,4 @@
 ## Directory-based project format:
 .idea/
 node_modules
-config
+config/local.js
