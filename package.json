@@ -1,9 +1,9 @@
 {
   "name": "fabrique",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "main": "./bin/www",
   "dependencies": {
@@ -23,6 +23,7 @@
     "nodemailer": "^1.3.4",
     "password-generator": "^1.0.0",
     "request": "^2.58.0",
+    "sequelize": "^3.18.0",
     "serve-favicon": "~2.2.1",
     "validator": "^3.40.1"
   }
