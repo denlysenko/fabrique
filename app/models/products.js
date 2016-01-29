@@ -1,38 +1,87 @@
-var mysql = require('../lib/mysql'),
-		async = require('async');
+'use strict';
 
-module.exports = {
-	save: function(data, callback) {
-		mysql.query('INSERT INTO products SET ?', data, callback);
-	},
-	update: function(product, code, callback) {
-		mysql.query('UPDATE products SET ? WHERE code = ?', [product, code], callback);
-	},
-	remove: function(code, callback) {
-		mysql.query('DELETE FROM products WHERE code = ?', [code], callback);
-	},
-	findByCode: function(code, callback) {
-		mysql.query('SELECT * FROM products WHERE code = ?', [code], callback);
-	},
-	findByCategory: function(category, callback) {
-		mysql.query('SELECT code, category, title, price FROM products WHERE category = ?', [category], callback);
-	},
-	findByTitle: function(title, callback) {
-		mysql.query('SELECT * FROM products WHERE MATCH(title) AGAINST(?)', [title], callback);
-	},
-	findLast: function(num, callback) {
-		mysql.query('SELECT * FROM products INNER JOIN images ON products.code=images.code GROUP BY products.code ORDER BY added DESC LIMIT ?', [num], callback);
-	},
-	findLastFromCategory: function(num, category, callback) {
-		mysql.query('SELECT * FROM products p, images i WHERE p.category = ? AND p.code = i.code GROUP BY p.code ORDER BY added DESC LIMIT ?', [category, num], callback);
-	},
-	findMostViewed: function(num, callback) {
-		mysql.query('SELECT * FROM products INNER JOIN images ON products.code=images.code GROUP BY products.code ORDER BY views DESC LIMIT ?', [num], callback);
-	},
-	findMostViewedByCategory: function(num, category, callback) {
-		mysql.query('SELECT * FROM products p, images i WHERE p.category = ? AND p.code = i.code GROUP BY p.code ORDER BY views DESC LIMIT ?', [category, num], callback);
-	},
-	findForCart: function(codes, callback) {
-			mysql.query('SELECT * FROM products p, images i WHERE p.code IN ? AND p.code = i.code GROUP BY p.code ORDER BY title', [[codes]], callback);
-	}
+module.exports = function(sequelize, DataTypes) {
+  var Product = sequelize.define('product',
+      {
+        code: {
+          type: DataTypes.STRING(45),
+          unique: {
+            msg: 'Product with such code already exists!'
+          },
+          validate: {
+            isAlphanumeric: {
+              msg: 'Code should contain only letter or numbers!'
+            }
+          },
+          primaryKey: true
+        },
+        category: {
+          type: DataTypes.ENUM('flooring', 'curtains', 'bedding'),
+          validate: {
+            isAlpha: {
+              msg: 'Category should contain letters'
+            }
+          }
+        },
+        title: {
+          type: DataTypes.STRING(100),
+          validate: {
+            notEmpty: {
+              msg: 'Title should contain letters and numbers'
+            }
+          }
+        },
+        desc: {
+          type: DataTypes.TEXT,
+          validate: {
+            notEmpty: {
+              msg: 'Description should contain letters and numbers'
+            }
+          }
+        },
+        info: {
+          type: DataTypes.TEXT,
+          validate: {
+            notEmpty: {
+              msg: 'Info should contain letters and numbers'
+            }
+          }
+        },
+        price: {
+          type: DataTypes.DECIMAL(8,2).UNSIGNED,
+          validate: {
+            isFloat: {
+              msg: 'Price should contain decimal numbers'
+            }
+          }
+        },
+        views: {
+          type: DataTypes.INTEGER(10).UNSIGNED,
+          defaultValue: 0
+        },
+        added: {
+          type: DataTypes.DATE,
+          defaultValue: DataTypes.NOW
+        },
+        sale: {
+          type: DataTypes.INTEGER(3).UNSIGNED,
+          allowNull: true
+        }
+      },
+      {
+        indexes: [{
+          name: 'ixTitle',
+          type: 'FULLTEXT',
+          fields: ['title']
+        }],
+        classMethods: {
+          associate: function(models) {}
+        },
+        timestamps: true,
+        underscored: true,
+        tableName: 'products'
+      });
+
+  return Product;
 };
+

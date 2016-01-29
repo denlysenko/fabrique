@@ -67,5 +67,11 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'clients'
   });
 
+  Client.beforeCreate(function(client) {
+    client.salt = crypto.randomBytes(16).toString('hex');
+    client.hashedPassword = this.encryptPassword(client.password, client.salt);
+  });
+
   return Client;
 };
+

@@ -1,13 +1,41 @@
-var mysql = require('../lib/mysql');
+'use strict';
 
-module.exports = {
-	save: function(data, callback) {
-		mysql.query('INSERT INTO orders (email, title, qty, price, currency) VALUES ?', [data], callback);
-	},
-	remove: function(email, callback) {
-		mysql.query('DELETE FROM orders WHERE email = ?', [email], callback);
-	},
-	find: function(email, callback) {
-		mysql.query('SELECT title, qty, price, currency, DATE_FORMAT(date, "%d/%m/%Y") AS date FROM orders WHERE email = ?  ORDER BY date', [email], callback);
-	}
+module.exports = function(sequelize, DataTypes) {
+  var Order = sequelize.define('order',
+      {
+        id: {
+          type: DataTypes.INTEGER(10).UNSIGNED,
+          autoIncrement: true,
+          primaryKey: true
+        },
+        email: {
+          type: DataTypes.STRING(90)
+        },
+        title: {
+          type: DataTypes.STRING(100)
+        },
+        qty: {
+          type: DataTypes.INTEGER(4)
+        },
+        price: {
+          type: DataTypes.DECIMAL(8,2)
+        },
+        currency: {
+          type: DataTypes.STRING(1)
+        },
+        date: {
+          type: DataTypes.DATE,
+          defaultValue: DataTypes.NOW
+        }
+      },
+      {
+        classMethods: {
+          associate: function(models) {}
+        },
+        timestamps: true,
+        underscored: true,
+        tableName: 'orders'
+      });
+
+  return Order;
 };
