@@ -1,16 +1,38 @@
-var mysql = require('../lib/mysql');
+'use strict';
 
-module.exports = {
-	save: function(data, callback) {
-		mysql.query('INSERT INTO data_sheet (code, feature, characteristic) VALUES ?', [data], callback);
-	},
-	findByCode: function(code, callback) {
-		mysql.query('SELECT * FROM data_sheet WHERE code = ?', [code], callback);
-	},
-	findByIdAndRemove: function(id, callback) {
-		mysql.query('DELETE FROM data_sheet WHERE id = ?', [id], callback);
-	},
-	findByCodeAndRemove: function(code, callback) {
-		mysql.query('DELETE FROM data_sheet WHERE code = ?', [code], callback);
-	}
+module.exports = function(sequelize, DataTypes) {
+  var DataSheet = sequelize.define('dataSheet',
+      {
+        id: {
+          type: DataTypes.INTEGER(10).UNSIGNED,
+          autoIncrement: true,
+          primaryKey: true
+        },
+        feature: {
+          type: DataTypes.STRING,
+          validate: {
+            notEmpty: {
+              msg: 'Feature should contain letters and numbers'
+            }
+          }
+        },
+        characteristic: {
+          type: DataTypes.STRING,
+          validate: {
+            notEmpty: {
+              msg: 'Characteristic should contain letters and numbers'
+            }
+          }
+        }
+      },
+      {
+        classMethods: {
+          associate: function(models) {}
+        },
+        timestamps: true,
+        underscored: true,
+        tableName: 'data_sheet'
+      });
+
+  return DataSheet;
 };

@@ -1,13 +1,45 @@
-var mysql = require('../lib/mysql');
+'use strict';
 
-module.exports = {
-	save: function(data, callback) {
-		mysql.query('INSERT INTO reviews SET ?', [data], callback);
-	},
-	find: function(code, callback) {
-		mysql.query('SELECT name, rate, review, DATE_FORMAT(added, "%d/%m/%Y") AS added, code FROM reviews WHERE code = ? ORDER BY added', [code], callback);
-	},
-	removeAll: function(code, callback) {
-		mysql.query('DELETE FROM reviews WHERE code = ?', [code], callback);
-	}
+module.exports = function(sequelize, DataTypes) {
+  var Review = sequelize.define('review',
+      {
+        id: {
+          type: DataTypes.INTEGER(10).UNSIGNED,
+          autoIncrement: true,
+          primaryKey: true
+        },
+        name: {
+          type: DataTypes.STRING(90),
+          validate: {
+            notEmpty: {
+              msg: 'Please, enter your name!'
+            }
+          }
+        },
+        rate: {
+          type: DataTypes.INTEGER(3).UNSIGNED,
+          validate: {
+            isInt: {
+              msg: 'Rate should be a number'
+            }
+          }
+        },
+        review: {
+          type: DataTypes.TEXT,
+          validate: {
+            notEmpty: {
+              msg: 'Review should be filled'
+            }
+          }
+        }
+      },
+      {
+        classMethods: {
+          associate: function(models) {}
+        },
+        timestamps: true,
+        underscored: true,
+        tableName: 'reviews'
+      });
+  return Review;
 };

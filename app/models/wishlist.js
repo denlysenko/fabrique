@@ -1,16 +1,21 @@
-var mysql = require('../lib/mysql');
+'use strict';
 
-module.exports = {
-	save: function(data, callback) {
-		mysql.query('INSERT INTO wishlist SET ?', [data], callback);
-	},
-	remove: function(code, callback) {
-		mysql.query('DELETE FROM wishlist WHERE code = ?', [code], callback);
-	},
-	find: function(email, callback) {
-		mysql.query('SELECT * FROM products p, images i WHERE p.code IN (SELECT code FROM wishlist WHERE email = ?) AND p.code = i.code GROUP BY p.code', [email], callback)
-	},
-	removeClient: function(email, callback) {
-		mysql.query('DELETE FROM wishlist WHERE email = ?', [email], callback);
-	}
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('wishlist',
+      {
+        code: {
+          type: DataTypes.STRING(45),
+          unique: {
+            msg: 'This item was already added to your wishlist'
+          }
+        },
+        email: {
+          type: DataTypes.STRING(90)
+        }
+      },
+      {
+        timestamps: true,
+        underscored: true,
+        tableName: 'wishlists'
+      });
 };

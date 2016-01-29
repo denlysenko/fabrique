@@ -1,13 +1,32 @@
-var mysql = require('../lib/mysql');
+'use strict';
 
-module.exports = {
-	save: function(data, callback) {
-		mysql.query('INSERT INTO discounts SET ?', [data], callback);
-	},
-	remove: function(number, callback) {
-		mysql.query('DELETE FROM discounts WHERE number = ?', [number], callback);
-	},
-	find: function(number, callback) {
-		mysql.query('SELECT * FROM discounts WHERE number = ?', [number], callback);
-	}
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('discount',
+      {
+        cardNumber: {
+          type: DataTypes.INTEGER(10).UNSIGNED,
+          unique: {
+            msg: 'Card number already exists'
+          },
+          validate: {
+            is: {
+              args: [['\d{8}']],
+              msg: 'Card number must contain 8 digits'
+            }
+          }
+        },
+        discount: {
+          type: DataTypes.INTEGER(3).UNSIGNED,
+          validate: {
+            isInt: {
+              msg: 'Discount must be an integer'
+            }
+          }
+        }
+      },
+      {
+        timestamps: true,
+        underscored: true,
+        tableName: 'discounts'
+      });
 };
