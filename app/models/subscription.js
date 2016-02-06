@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       },
       {
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'subscribers'
       });
 };

@@ -1,14 +1,14 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('sale',
+  var Sale = sequelize.define('sale',
       {
         id: {
           type: DataTypes.INTEGER(10).UNSIGNED,
           primaryKey: true,
           autoIncrement: true
         },
-        code: {
+        productCode: {
           type: DataTypes.STRING(45),
           validate: {
             isAlphanumeric: {
@@ -55,8 +55,14 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       {
-        timestamps: true,
-        underscored: true,
+        classMethods: {
+          associate: function(models) {
+            Sale.belongsTo(models.product, {foreignKey: 'productCode'});
+          }
+        },
+        timestamps: false,
+        underscored: false,
         tableName: 'sale'
       });
+  return Sale;
 };

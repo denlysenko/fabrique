@@ -3,11 +3,6 @@
 module.exports = function(sequelize, DataTypes) {
   var Review = sequelize.define('review',
       {
-        id: {
-          type: DataTypes.INTEGER(10).UNSIGNED,
-          autoIncrement: true,
-          primaryKey: true
-        },
         name: {
           type: DataTypes.STRING(90),
           validate: {
@@ -34,11 +29,8 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       {
-        classMethods: {
-          associate: function(models) {}
-        },
-        timestamps: true,
-        underscored: true,
+        timestamps: false,
+        underscored: false,
         tableName: 'reviews'
       });
   return Review;

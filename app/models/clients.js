@@ -4,7 +4,7 @@ var crypto = require('crypto');
 
 module.exports = function(sequelize, DataTypes) {
   var Client = sequelize.define('client', {
-    id: {
+    clientId: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
       primaryKey: true
@@ -55,7 +55,10 @@ module.exports = function(sequelize, DataTypes) {
       encryptPassword: function(password, salt) {
         return crypto.createHmac('sha1', salt).update(password).digest('hex');
       },
-      associate: function(models) {}
+      associate: function(models) {
+        Client.hasMany(models.order, {foreignKey: 'clientId', as: 'orders'});
+        Client.hasMany(models.wishlist, {foreignKey: 'clientId', as: 'wishlist'});
+      }
     },
     instanceMethods: {
       checkPassword: function(password, salt, hashedPassword) {
@@ -63,7 +66,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     timestamps: true,
-    underscored: true,
+    underscored: false,
     tableName: 'clients'
   });
 

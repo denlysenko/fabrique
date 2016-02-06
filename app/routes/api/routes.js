@@ -1,11 +1,11 @@
 var router = require('express').Router(),
-		main = require('.././api/main'),
-		manager = require('.././api/managers'),
-		slider = require('.././api/slider'),
-		sale = require('.././api/sale'),
-		discount = require('.././api/discounts'),
-		loadManager = require('.././loadManager'),
-		checkManager = require('.././checkManager');
+		main = require('../../controllers/api/main'),
+		manager = require('../../controllers/api/managers'),
+		slider = require('../../controllers/api/slider'),
+		sale = require('../../controllers/api/sale'),
+		discount = require('../../controllers/api/discounts'),
+		loadManager = require('../../lib/middlewares/loadManager'),
+		checkManager = require('../../lib/middlewares/checkManager');
 
 router.use(loadManager);		
 

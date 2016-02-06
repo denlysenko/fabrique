@@ -1,21 +1,25 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('wishlist',
+  var Wishlist = sequelize.define('wishlist',
       {
-        code: {
+        productCode: {
           type: DataTypes.STRING(45),
           unique: {
             msg: 'This item was already added to your wishlist'
           }
-        },
-        email: {
-          type: DataTypes.STRING(90)
         }
       },
       {
-        timestamps: true,
-        underscored: true,
+        classMethods: {
+          associate: function(models) {
+            Wishlist.belongsTo(models.product, {foreignKey: 'productCode'});
+          }
+        },
+        timestamps: false,
+        underscored: false,
         tableName: 'wishlists'
       });
+
+  return Wishlist;
 };

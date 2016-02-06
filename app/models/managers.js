@@ -27,8 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
           encryptPassword: function(password, salt) {
             return crypto.createHmac('sha1', salt).update(password).digest('hex');
-          },
-          //associate: function(models) {}
+          }
         },
         instanceMethods: {
           checkPassword: function(password, salt, hashedPassword) {
@@ -36,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
           }
         },
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'managers'
       });
 

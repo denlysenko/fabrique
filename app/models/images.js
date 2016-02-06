@@ -16,11 +16,8 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       {
-        classMethods: {
-          associate: function(models) {}
-        },
-        timestamps: true,
-        underscored: true,
+        timestamps: false,
+        underscored: false,
         tableName: 'images'
       });
 

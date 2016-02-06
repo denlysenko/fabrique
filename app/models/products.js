@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
   var Product = sequelize.define('product',
       {
-        code: {
+        productCode: {
           type: DataTypes.STRING(45),
           unique: {
             msg: 'Product with such code already exists!'
@@ -75,10 +75,14 @@ module.exports = function(sequelize, DataTypes) {
           fields: ['title']
         }],
         classMethods: {
-          associate: function(models) {}
+          associate: function(models) {
+            Product.hasMany(models.review, {foreignKey: 'productCode', as: 'reviews'});
+            Product.hasMany(models.image, {foreignKey: 'productCode', as: 'images'});
+            Product.hasMany(models.dataSheet, {foreignKey: 'productCode', as: 'dataSheet'});
+          }
         },
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'products'
       });
 

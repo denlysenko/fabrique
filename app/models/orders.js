@@ -3,15 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
   var Order = sequelize.define('order',
       {
-        id: {
-          type: DataTypes.INTEGER(10).UNSIGNED,
-          autoIncrement: true,
-          primaryKey: true
-        },
-        email: {
-          type: DataTypes.STRING(90)
-        },
-        title: {
+        productTitle: {
           type: DataTypes.STRING(100)
         },
         qty: {
@@ -22,10 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         },
         currency: {
           type: DataTypes.STRING(1)
-        },
-        date: {
-          type: DataTypes.DATE,
-          defaultValue: DataTypes.NOW
         }
       },
       {
@@ -33,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
           associate: function(models) {}
         },
         timestamps: true,
-        underscored: true,
+        underscored: false,
         tableName: 'orders'
       });
 

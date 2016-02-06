@@ -1,20 +1,12 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('slider',
+  var Slider = sequelize.define('slider',
       {
         id: {
           type: DataTypes.INTEGER(10).UNSIGNED,
           primaryKey: true,
           autoIncrement: true
-        },
-        code: {
-          type: DataTypes.STRING(45),
-          validate: {
-            isAlphanumeric: {
-              msg: 'Code should contain only letter or numbers'
-            }
-          }
         },
         title: {
           type: DataTypes.STRING(100),
@@ -25,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
           }
         },
         slogan: {
-          type: DataTypes.STRINGD,
+          type: DataTypes.STRING(255),
           validate: {
             notEmpty: {
               msg: 'Slogan should contain letters and numbers'
@@ -37,8 +29,14 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       {
-        timestamps: true,
-        underscored: true,
+        classMethods: {
+          associate: function(models) {
+            Slider.belongsTo(models.product, {foreignKey: 'productCode'});
+          }
+        },
+        timestamps: false,
+        underscored: false,
         tableName: 'slider'
       });
+  return Slider;
 };

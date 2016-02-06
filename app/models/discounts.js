@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('discount',
+  return sequelize.define('discountCard',
       {
         cardNumber: {
           type: DataTypes.INTEGER(10).UNSIGNED,
@@ -25,8 +25,8 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       {
-        timestamps: true,
-        underscored: true,
-        tableName: 'discounts'
+        timestamps: false,
+        underscored: false,
+        tableName: 'discount_cards'
       });
 };

@@ -35,9 +35,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./app/lib/middlewares/loadRates'));
 
-app.use('/api', require('./app/routes/api/routes'));
-app.use('/', require('./app/routes/index'));
-app.use('/product', require('./app/routes/product'));
+//app.use('/api', require('./app/routes/api/routes'));
+//app.use('/', require('./app/routes/index'));
+//app.use('/product', require('./app/routes/product'));
 
 // catch 404 and forward to errors handler
 app.use(function(req, res, next) {
