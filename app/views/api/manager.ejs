@@ -1,4 +1,4 @@
-<%- include('blocks/header') %>
+<%- include('partials/header') %>
 	<div class="content">
     <h3>Managers</h3>
     <hr>
@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-sm-6">
         <h4 id="add">Add manager</h4>
-        <form action="/api/manager" method="post">
+        <form action="/app/manager" method="post">
           <div class="form-group">
             <input type="text" class="form-control" placeholder="Name" name="name">
           </div>
@@ -23,7 +23,7 @@
       </div>
       <div class="col-sm-6">
         <h4 id="remove">Remove manager</h4>
-        <form action="/api/manager?_method=DELETE" method="post">
+        <form action="/app/manager?_method=DELETE" method="post">
           <div class="form-group">
             <input type="text" class="form-control" placeholder="Name" name="name">
           </div>
@@ -34,4 +34,4 @@
       </div>
     </div>
   </div>
-<%- include('blocks/footer') %>  
+<%- include('partials/footer') %>

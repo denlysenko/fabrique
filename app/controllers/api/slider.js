@@ -29,7 +29,7 @@ exports.slider = function(req, res, next) {
 				images = results[1];
 
 		if(!product) return next(new HttpError(404, 'Product Not Found'));		
-		res.render('api/products/slider', {
+		res.render('app/products/slider', {
 			title: 'Add ' + product.title + ' To Slider',
 			product: product,
 			images: images
@@ -82,7 +82,7 @@ exports.addToSlider = function(req, res, next) {
 exports.sliderRemove = function(req, res, next) {
 	Slider.find(function(err, rows) {
 		if(err) return next(err);
-		res.render('api/products/slider_remove', {
+		res.render('app/products/slider_remove', {
 			title: 'Remove From Slider',
 			results: rows
 		});

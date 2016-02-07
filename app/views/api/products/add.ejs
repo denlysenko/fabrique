@@ -1,9 +1,9 @@
-<%- include('../blocks/header')%>
+<%- include('../partials/header')%>
 <div class="content">
     <h3>Add new product</h3>
     <hr>
     <%- include('../../messages')%>
-    <form action="/api/products/add" method="post" enctype="multipart/form-data">
+    <form action="/app/products/add" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label>Product Code</label>
         <input type="text" name="code" class="form-control" placeholder="Product Code">
@@ -58,4 +58,4 @@
     </div>
   </form>
 </div>
-<%- include('../blocks/footer')%>
+<%- include('../partials/footer')%>

@@ -1,4 +1,5 @@
-var router = require('express').Router(),
+module.exports = function(app) {};
+/*var router = require('express').Router(),
 		main = require('../../controllers/api/main'),
 		manager = require('../../controllers/api/managers'),
 		slider = require('../../controllers/api/slider'),
@@ -55,4 +56,4 @@ router.route('/discounts')
 		.post(discount.add)
 		.delete(discount.remove);
 
-module.exports = router;
+module.exports = router;*/

@@ -30,7 +30,7 @@ module.exports = function(req, res, next) {
 				features = results[1],
 				images = results[2];
 		if(!product) return next(new HttpError(404, 'Product Not Found'));		
-		res.render('api/products/edit', {
+		res.render('app/products/edit', {
 			title: 'Edit ' + product.title,
 			product: product,
 			images: images,

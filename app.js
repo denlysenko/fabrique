@@ -12,7 +12,7 @@ var multer = require('multer');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './app/views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -25,7 +25,7 @@ app.use(multer({
   rename: function(fieldname, filename) {
     return filename;
   }
-}))
+}));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(session(config.get('session')));
@@ -34,10 +34,7 @@ app.use(require('./app/lib/modules/search-results/index'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./app/lib/middlewares/loadRates'));
-
-//app.use('/api', require('./app/routes/api/routes'));
-//app.use('/', require('./app/routes/index'));
-//app.use('/product', require('./app/routes/product'));
+require('./app/routes')(app);
 
 // catch 404 and forward to errors handler
 app.use(function(req, res, next) {
@@ -52,6 +49,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log(err);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,

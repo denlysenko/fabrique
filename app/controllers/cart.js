@@ -48,7 +48,7 @@ exports.show = function(req, res, next) {
 };
 
 exports.checkout = function(req, res) {
-	res.render('blocks/checkout');
+	res.render('partials/checkout');
 };
 
 exports.sendOrder = function(req, res, next) {

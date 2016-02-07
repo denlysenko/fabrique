@@ -11,7 +11,7 @@ exports.sale = function(req, res, next) {
 	var code = req.params.code;
 	Product.findByCode(code, function(err, rows) {
 		if(err) return next(err);
-		res.render('api/products/sale', {
+		res.render('app/products/sale', {
 			title: 'Add Product On Sale',
 			product: rows[0]
 		});
@@ -59,7 +59,7 @@ exports.addToSale = function(req, res, next) {
 	}, function(err) {
 		if(err && err.code === 'ER_DUP_ENTRY') {
 			res.error('Product with ' + code + ' has been already added');
-			return res.redirect('/api/sale');
+			return res.redirect('/app/sale');
 		}
 
 		if(err) return next(err);
@@ -74,7 +74,7 @@ exports.addToSale = function(req, res, next) {
 exports.saleRemove = function(req, res, next) {
 	Sale.findAll(function(err, rows) {
 		if(err) return next(err);
-		res.render('api/products/sale_remove', {
+		res.render('app/products/sale_remove', {
 			title: 'Remove From Sale',
 			results: rows
 		});
@@ -101,6 +101,6 @@ exports.removeFromSale = function(req, res, next) {
 		}
 	], function(err) {
 		if(err) return next(err);
-		res.send('/api/sale/remove');
+		res.send('/app/sale/remove');
 	});
 };

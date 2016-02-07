@@ -24,7 +24,7 @@ exports.authenticate = function(req, res, next) {
 				return next(err);
 			} else {
 				req.session.manager = login;
-				res.render('api/index', {
+				res.render('app/index', {
 					title: 'Admin Panel',
 					manager: login
 				});

@@ -2,51 +2,51 @@ var path = require('path');
 
 exports.index = function(req, res) {
 	if(req.session.manager) {
-		res.render('api/index', {
+		res.render('app/index', {
 			title: 'Admin Panel',
 		});
 	} else {
-		res.render('api/authentication', {
+		res.render('app/authentication', {
 			title: 'Authentication'
 		});
 	}
 };
 
 exports.manager = function(req, res) {
-	res.render('api/manager', {
+	res.render('app/manager', {
 		title: 'Managers',
 	});
 };
 
 exports.addProduct = function(req, res) {
-	res.render('api/products/add', {
+	res.render('app/products/add', {
 		title: 'Add Product',
 	});
 };
 
 exports.editProduct = function(req, res) {
-	res.render('api/products/search', {
+	res.render('app/products/search', {
 		title: 'Edit Product',
 		page: 'edit'
 	});
 };
 
 exports.slider = function(req, res) {
-	res.render('api/products/search', {
+	res.render('app/products/search', {
 		title: 'Search Products',
 		page: 'slider'
 	});
 };
 
 exports.sale = function(req, res) {
-	res.render('api/products/search', {
+	res.render('app/products/search', {
 		title: 'Search Products',
 		page: 'sale'
 	});
 };
 
 exports.discounts = function(req, res) {
-	res.render('api/discounts', {
+	res.render('app/discounts', {
 		title: 'Discount Cards',
 	});
 };

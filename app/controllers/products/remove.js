@@ -40,11 +40,11 @@ module.exports = function(req, res, next) {
 			image.remove(results[5], function(err) {
 				if(err) return next(err);
 				res.message('Product with code ' + code + ' successfully removed', 'bg-success');
-				res.send('/api/products/edit');
+				res.send('/app/products/edit');
 			});
 		} else {
 			res.message('Product with code ' + code + ' successfully removed', 'bg-success');
-			res.send('/api/products/edit');
+			res.send('/app/products/edit');
 		}
 	});
 };

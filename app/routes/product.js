@@ -1,4 +1,4 @@
-var router = require('express').Router(),
+/*var router = require('express').Router(),
 		product = require('./products'),
 		checkAuth = require('./checkAuth');
 
@@ -11,4 +11,6 @@ router.route('/basket/:code')
 		.delete(product.removeFromBasket);
 
 
-module.exports = router;
+module.exports = router;*/
+
+module.exports = function(app) {};
