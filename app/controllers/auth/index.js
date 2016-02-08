@@ -1,8 +1,8 @@
-//var generatePassword = require('password-generator'),
-//		Client = require('../../models/clients'),
-//		validator = require('validator'),
-//		HttpError = require('../errors').HttpError,
-//		verifyEmail = require('../email-verification'),
+var generatePassword = require('password-generator'),
+    models = require('../../models'),
+    ValidationError = require('sequelize').ValidationError,
+    HttpError = require('../../lib/modules/errors').HttpError,
+		verifyEmail = require('../../lib/modules/email-verification');
 //		Subscription = require('../../models/subscription'),
 //		Order = require('../../models/orders'),
 //		Wishlist = require('../../models/wishlist'),
@@ -25,63 +25,49 @@ exports.securePassword = function(req, res) {
 };
 
 exports.register = function(req, res, next) {
-  var name = req.body.name,
-      lastName = req.body['last-name'],
-      email = req.body.email,
-      password = req.body.passwd,
+  var name = req.body.name && req.body.name.trim(),
+      lastName = req.body['last-name'] && req.body['last-name'].trim(),
+      email = req.body.email && req.body.email.trim(),
+      password = req.body.passwd && req.body.passwd.trim(),
       subscription = req.body.subscription;
 
-  if(!validator.isNonEmpty(name)) {
-    return res.status(403).json(new HttpError(403, 'Name should be filled'));
-  }
-
-  if(!validator.isNonEmpty(lastName)) {
-    return res.status(403).json(new HttpError(403, 'Last Name should be filled'));
-  }
-
-  if(!validator.isEmail(email)) {
-    return res.status(403).json(new HttpError(403, 'Please, enter valid email'));
-  }
-
-  if(!validator.isNonEmpty(password)) {
-    return res.status(403).json(new HttpError(403, 'Password should be filled'));
-  }
-
-  name = name.trim();
-  lastName = lastName.trim();
-  email = email.trim();
-  password = password.trim();
-
-  var client = new Client({
+  models.client.create({
     name: name,
     lastName: lastName,
     email: email,
     password: password
-  });
-
-  var link = req.protocol + '://' + req.get('host') + req.originalUrl;
-
-  client.save(function(err) {
-    if(err && err.code === 'ER_DUP_ENTRY') {
-      return res.status(403).json(new HttpError(403, 'User already exists'));
-    }
-    if(err) return next(err);
-
-    verifyEmail.sendVerifyEmail(email, link, function(err) {
-      if(err) return next(err);
-      if(subscription) {
-        Subscription.subscribe(email, function(err) {
-          if(err && err.code === 'ER_DUP_ENTRY') {
-            return res.status(403).json(new HttpError(403, 'You have already subscribed'));
-          }
+  })
+      .then(function() {
+        res.end();
+        var link = req.protocol + '://' + req.get('host') + req.originalUrl;
+        verifyEmail.sendVerifyEmail(email, link, function(err) {
           if(err) return next(err);
-          res.send('We sent verification letter on your email. Please, confirm your email. Link valid 2 hours');
+          if(subscription) {
+            models.subscriber.create({
+              email: email
+            })
+                .then(function() {
+                  res.send('We sent verification letter on your email. Please, confirm your email. Link valid 2 hours');
+                })
+                .catch(function(err) {
+                  if(err instanceof ValidationError) {
+                    return res.status(403).json(new HttpError(403, 'You have already subscribed'));
+                  } else {
+                    return next(err);
+                  }
+                });
+          } else {
+            res.send('We sent verification letter on your email. Please, confirm your email. Link valid 2 hours');
+          }
         });
-      } else {
-        res.send('We sent verification letter on your email. Please, confirm your email. Link valid 2 hours');
-      }
-    });
-  });
+      })
+      .catch(function(err) {
+        if(err instanceof ValidationError) {
+          return res.status(403).send(new HttpError(403, err.message));
+        } else {
+          return next(err);
+        }
+      });
 };
 
 exports.confirmation = function(req, res, next) {

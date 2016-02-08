@@ -6,13 +6,16 @@ module.exports = function(app) {
   app.route('/register')
       .get(auth.regForm)
       .post(auth.register);
+
   app.route('/login')
       .get(auth.login)
       .post(auth.authenticate);
+
+  app.route('/register/secure').get(auth.securePassword);
 };
 
 
-//router.get('/register/secure', user.securePassword);
+
 //router.get('/register/email-verification/:token', user.confirmation);
 //
 

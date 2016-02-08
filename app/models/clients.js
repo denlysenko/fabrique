@@ -39,6 +39,9 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
+    password: {
+      type: DataTypes.VIRTUAL
+    },
     salt: {
       type: DataTypes.STRING(45)
     },
