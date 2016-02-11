@@ -14,12 +14,16 @@ module.exports = function(app) {
   app.route('/register/secure').get(auth.securePassword);
 
   app.route('/register/email-verification/:token').get(auth.confirmation);
+
+  app.route('/restore_password').post(auth.restore);
+
+  app.route('/update_password').post(auth.updatePassword);
 };
 
 //router.get('/logout', user.logout);
 //
-//router.post('/restore_password', user.restore);
-//router.post('/update_password', user.updatePassword);
+//
+//
 //
 //router.route('/cancel_account')
 //		.get(checkAuth, user.cancelAccount)

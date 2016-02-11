@@ -78,6 +78,11 @@ module.exports = function(sequelize, DataTypes) {
     client.hashedPassword = this.encryptPassword(client.password, client.salt);
   });
 
+  Client.beforeUpdate(function(client) {
+    client.salt = crypto.randomBytes(16).toString('hex');
+    client.hashedPassword = this.encryptPassword(client.password, client.salt);
+  });
+
   return Client;
 };
 

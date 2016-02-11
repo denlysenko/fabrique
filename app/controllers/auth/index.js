@@ -124,15 +124,21 @@ exports.authenticate = function(req, res, next) {
 };
 
 exports.restore = function(req, res, next) {
-  var email = req.body.email;
-  Client.find(email, function(err) {
-    if(err) return next(err);
-    res.render('restore', {
-      title: 'Restore password',
-      page: req.path,
-      email: email
-    });
-  });
+  var email = req.body.email && req.body.email.trim();
+  models.client.findOne({
+    where: {email: email, verified: 1}
+  })
+      .then(function(client) {
+        if(!client) return next(new HttpError(404, 'User Not Found'));
+        res.render('restore', {
+          title: 'Restore password',
+          page: req.path,
+          email: client.email
+        });
+      })
+      .catch(function(err) {
+        next(err);
+      });
 };
 
 exports.updatePassword = function(req, res, next) {
@@ -147,12 +153,41 @@ exports.updatePassword = function(req, res, next) {
     return res.status(403).json(new HttpError(403, 'Password should be filled'));
   }
 
+  email = email.trim();
   password = password.trim();
 
-  Client.updatePassword(email, password, function(err) {
-    if(err) return res.status(err.status).json(err);
-    res.send('Your password was successfully updated');
+  async.waterfall([
+      function(callback) {
+        models.client.findOne({
+          where: {email: email, verified: 1}
+        })
+            .then(function(client) {
+              callback(null, client);
+            })
+            .catch(function(err) {
+              next(err);
+            })
+      },
+      function(client, callback) {
+        client.password = password;
+        client.save()
+            .then(function(client) {
+              callback();
+            })
+            .catch(function(err) {
+              if(err instanceof ValidationError) {
+                callback(new HttpError(403, err.message));
+              } else {
+                callback(err);
+              }
+            })
+      }
+  ], function(err) {
+    if(err && err.status === 403) return res.status(403).send({message: err.message});
+    if(err) return next(err);
+    res.send('Password successfully changed');
   });
+
 };
 
 exports.subscription = function(req, res, next) {
