@@ -1,6 +1,7 @@
 'use strict';
 
-var auth = require('../controllers/auth');
+var auth = require('../controllers/auth'),
+    checkAuth = require('../lib/middlewares/checkAuth');
 
 module.exports = function(app) {
   app.route('/register')
@@ -18,16 +19,20 @@ module.exports = function(app) {
   app.route('/restore_password').post(auth.restore);
 
   app.route('/update_password').post(auth.updatePassword);
+
+  app.route('/logout').get(auth.logout);
+
+  app.route('/cancel_account')
+		.get(checkAuth, auth.cancelAccount)
+		.delete(auth.removeAccount);
 };
 
-//router.get('/logout', user.logout);
 //
 //
 //
 //
-//router.route('/cancel_account')
-//		.get(checkAuth, user.cancelAccount)
-//		.delete(user.removeAccount);
+//
+
 //
 
 //module.exports = router;

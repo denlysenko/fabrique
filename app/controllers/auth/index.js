@@ -234,18 +234,71 @@ exports.cancelAccount = function(req, res, next) {
 exports.removeAccount = function(req, res, next) {
   var email = req.session.uid;
 
-  async.series([
+  async.waterfall([
     function(callback) {
-      Client.remove(email, callback);
+      models.client.findOne({
+        where: {
+          email: email
+        }
+      })
+          .then(function(client) {
+            callback(null, client);
+          })
+          .catch(function(err) {
+            callback(err);
+          });
+    },
+    function(client, callback) {
+      models.client.destroy({
+        where: {
+          clientId: client.clientId
+        }
+      })
+          .then(function() {
+            callback(null, client.clientId);
+          })
+          .catch(function(err) {
+            callback(err);
+          });
+    },
+    function(clientId, callback) {
+      models.order.destroy({
+        where: {
+          clientId: clientId
+        }
+      })
+          .then(function() {
+            callback(null, clientId);
+          })
+          .catch(function(err) {
+            callback(err);
+          })
+    },
+    function(clientId, callback) {
+      models.wishlist.destroy({
+        where: {
+          clientId: clientId
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          });
     },
     function(callback) {
-      Order.remove(email, callback);
-    },
-    function(callback) {
-      Wishlist.removeClient(email, callback);
-    },
-    function(callback) {
-      Subscription.unsubscribe(email, callback);
+      models.subscriber.destroy({
+        where: {
+          email: email
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          });
     }
   ], function(err) {
     if(err) return next(err);
