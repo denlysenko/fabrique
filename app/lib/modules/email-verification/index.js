@@ -1,10 +1,9 @@
-var mysql = require('./mysql'),
+var models = require('../../../models'),
 		nodemailer = require('nodemailer'),
 		crypto = require('crypto'),
 		async = require('async'),
-		HttpError = require('../error').HttpError,
-		Client = require('./clients'),
-		config = require('../config');
+		HttpError = require('../errors').HttpError,
+		config = require('../../../../config');
 
 var transporter = nodemailer.createTransport({
   service: config.get('mailer:service'),
@@ -21,18 +20,25 @@ exports.sendVerifyEmail = function(email, link, callback) {
 			});
 		},
 		function(token, callback) {
-			mysql.query('INSERT INTO tokens (email, token, expires) VALUES (?,?, TIMESTAMPADD(HOUR, 2, NOW()))', [email, token], function(err) {
-				if(err) return callback(err);
-				callback(null, token);
-			});
+			models.tokens.create({
+        email: email,
+        token: token,
+        expires: new Date(Date.now() + 60000) // 1hour
+      })
+          .then(function() {
+            callback(null, token);
+          })
+          .catch(function(err) {
+            callback(err);
+          });
 		},
 		function(token, callback) {
 			var tmpLink = link + '/email-verification/' + token;
 			transporter.sendMail({
-				from: '',
+				from: 'noreply@fabrique.com',
 				to: email,
 				subject: 'Email Verification',
-				html: 'You are trying to register at Fabrique. Please, confirm your email address by clicking on the following link <a href="' + tmpLink + '">' + tmpLink + '</a>. This link will be valid for 2 hours.'
+				html: 'You are trying to register at Fabrique. Please, confirm your email address by clicking on the following link <a href="' + tmpLink + '">' + tmpLink + '</a>. This link will be valid for 1 hour.'
 			});
 			callback();
 		}
@@ -42,23 +48,42 @@ exports.sendVerifyEmail = function(email, link, callback) {
 exports.confirm = function(token, callback) {
 	async.waterfall([
 		function(callback) {
-			mysql.query('SELECT email, token FROM tokens WHERE token = ?', [token], function(err, rows) {
-				if(err) return callback(err);
-				if(!rows.length) return callback(new HttpError(404, 'Page Not Found'));
-				callback(null, rows);
-			});
+			models.tokens.findOne({
+        where: {
+          token: token
+        }
+      })
+          .then(function(result) {
+            if(!result) {
+              return callback(new HttpError(404, 'Page Not Found'));
+            }
+            callback(null, result);
+          })
+          .catch(function(err) {
+            callback(err);
+          });
 		},
-		function(rows, callback) {
+		function(result, callback) {
 			transporter.sendMail({
 				from: '',
-				to: rows[0].email,
+				to: result.email,
 				subject: 'Registration Confirmation',
 				html: 'Thank you for registration at Fabrique.'
 			});
-			callback(null, rows[0].email)
+			callback(null, result.email)
 		},
 		function(email, callback) {
-			Client.update(email, {verified: 1}, callback)
+			models.client.update({
+        verified: 1
+      }, {
+        where: {email: email}
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          })
 		}
 	], callback);
 };

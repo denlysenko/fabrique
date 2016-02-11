@@ -6,5 +6,12 @@
     "saveUninitialized": true,
     "resave": true,
     "secret": "Fabrique"
+  },
+  "mailer": {
+    "service": "gmail",
+    "auth": {
+      "user": "denny.lysenko@gmail.com",
+      "pass": "0502269512"
+    }
   }
 }

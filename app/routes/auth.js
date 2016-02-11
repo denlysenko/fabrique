@@ -1,6 +1,6 @@
 'use strict';
 
-var auth = require('../controllers/auth')
+var auth = require('../controllers/auth');
 
 module.exports = function(app) {
   app.route('/register')
@@ -12,12 +12,9 @@ module.exports = function(app) {
       .post(auth.authenticate);
 
   app.route('/register/secure').get(auth.securePassword);
+
+  app.route('/register/email-verification/:token').get(auth.confirmation);
 };
-
-
-
-//router.get('/register/email-verification/:token', user.confirmation);
-//
 
 //router.get('/logout', user.logout);
 //

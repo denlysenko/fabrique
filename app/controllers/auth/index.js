@@ -2,15 +2,8 @@ var generatePassword = require('password-generator'),
     models = require('../../models'),
     ValidationError = require('sequelize').ValidationError,
     HttpError = require('../../lib/modules/errors').HttpError,
-		verifyEmail = require('../../lib/modules/email-verification');
-//		Subscription = require('../../models/subscription'),
-//		Order = require('../../models/orders'),
-//		Wishlist = require('../../models/wishlist'),
-//		async = require('async');
-
-//validator.extend('isNonEmpty', function(str) {
-//	return str !== '';
-//});
+		verifyEmail = require('../../lib/modules/email-verification'),
+    async = require('async');
 
 exports.regForm = function(req, res) {
   res.render('register', {
@@ -31,43 +24,53 @@ exports.register = function(req, res, next) {
       password = req.body.passwd && req.body.passwd.trim(),
       subscription = req.body.subscription;
 
-  models.client.create({
-    name: name,
-    lastName: lastName,
-    email: email,
-    password: password
-  })
-      .then(function() {
-        res.end();
+  async.series([
+      function(callback) {
+        models.client.create({
+          name: name,
+          lastName: lastName,
+          email: email,
+          password: password
+        })
+            .then(function() {
+              callback();
+            })
+            .catch(function(err) {
+              if (err instanceof ValidationError) {
+                return callback(new HttpError(403, err.message));
+              } else {
+                return callback(err);
+              }
+            });
+      },
+      function(callback) {
         var link = req.protocol + '://' + req.get('host') + req.originalUrl;
         verifyEmail.sendVerifyEmail(email, link, function(err) {
-          if(err) return next(err);
-          if(subscription) {
+          if (err) return next(err);
+          if (subscription) {
             models.subscriber.create({
               email: email
             })
-                .then(function() {
-                  res.send('We sent verification letter on your email. Please, confirm your email. Link valid 2 hours');
+                .then(function () {
+                  callback();
                 })
-                .catch(function(err) {
-                  if(err instanceof ValidationError) {
-                    return res.status(403).json(new HttpError(403, 'You have already subscribed'));
+                .catch(function (err) {
+                  if (err instanceof ValidationError) {
+                    return callback(new HttpError(403, err.message));
                   } else {
-                    return next(err);
+                    return callback(err);
                   }
                 });
           } else {
-            res.send('We sent verification letter on your email. Please, confirm your email. Link valid 2 hours');
+            callback();
           }
         });
-      })
-      .catch(function(err) {
-        if(err instanceof ValidationError) {
-          return res.status(403).send(new HttpError(403, err.message));
-        } else {
-          return next(err);
-        }
-      });
+      }
+  ], function(err) {
+    if(err && err.status === 403) return res.status(403).send({message: err.message});
+    if(err) return next(err);
+    res.send('We sent verification letter on your email. Please, confirm your email. Link valid 1 hour');
+  });
 };
 
 exports.confirmation = function(req, res, next) {
