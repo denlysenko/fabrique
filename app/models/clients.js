@@ -64,8 +64,8 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     instanceMethods: {
-      checkPassword: function(password, salt, hashedPassword) {
-        return hashedPassword === this.encryptPassword(password, salt);
+      checkPassword: function(password) {
+        return this.hashedPassword === Client.encryptPassword(password, this.salt);
       }
     },
     timestamps: true,

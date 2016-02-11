@@ -3,7 +3,12 @@ var generatePassword = require('password-generator'),
     ValidationError = require('sequelize').ValidationError,
     HttpError = require('../../lib/modules/errors').HttpError,
 		verifyEmail = require('../../lib/modules/email-verification'),
-    async = require('async');
+    async = require('async'),
+    validator = require('validator');
+
+validator.extend('isNonEmpty', function(str) {
+  return str !== '';
+});
 
 exports.regForm = function(req, res) {
   res.render('register', {
@@ -104,11 +109,18 @@ exports.authenticate = function(req, res, next) {
   email = email.trim();
   password = password.trim();
 
-  Client.authenticate(email, password, function(err) {
-    if(err) return res.status(err.status).json(err);
-    req.session.uid = email;
-    res.send('User ' + email + ' successfully logged in');
-  });
+  models.client.findOne({
+    where: {email: email, verified: 1}
+  })
+      .then(function(client) {
+        if(!client) return res.status(404).send({message: 'User Not Found'});
+        if(!client.checkPassword(password)) return res.status(403).send(new HttpError(403, 'Invalid password'));
+        req.session.uid = email;
+        res.send('User ' + email + ' successfully logged in');
+      })
+      .catch(function(err) {
+        next(err);
+      });
 };
 
 exports.restore = function(req, res, next) {
