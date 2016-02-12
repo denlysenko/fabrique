@@ -1,22 +1,6 @@
 var path = require('path');
 
-exports.index = function(req, res) {
-	if(req.session.manager) {
-		res.render('app/index', {
-			title: 'Admin Panel',
-		});
-	} else {
-		res.render('app/authentication', {
-			title: 'Authentication'
-		});
-	}
-};
 
-exports.manager = function(req, res) {
-	res.render('app/manager', {
-		title: 'Managers',
-	});
-};
 
 exports.addProduct = function(req, res) {
 	res.render('app/products/add', {
@@ -51,11 +35,3 @@ exports.discounts = function(req, res) {
 	});
 };
 
-exports.cancel = function(req, res) {
-	res.redirect('/');
-};
-
-exports.logout = function(req, res) {
-	req.session.destroy();
-	res.redirect('/');
-}

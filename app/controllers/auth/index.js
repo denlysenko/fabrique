@@ -73,7 +73,10 @@ exports.register = function(req, res, next) {
       }
   ], function(err) {
     if(err && err.status === 403) return res.status(403).send({message: err.message});
-    if(err) return next(err);
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
     res.send('We sent verification letter on your email. Please, confirm your email. Link valid 1 hour');
   });
 };
@@ -81,7 +84,10 @@ exports.register = function(req, res, next) {
 exports.confirmation = function(req, res, next) {
   var token = req.params.token;
   verifyEmail.confirm(token, function(err) {
-    if(err) return next(err);
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
     res.message('Your Email has been activated. Please, log in.', 'bg-success');
     res.redirect('/login');
   });
@@ -119,6 +125,7 @@ exports.authenticate = function(req, res, next) {
         res.send('User ' + email + ' successfully logged in');
       })
       .catch(function(err) {
+        console.log(err);
         next(err);
       });
 };
@@ -137,6 +144,7 @@ exports.restore = function(req, res, next) {
         });
       })
       .catch(function(err) {
+        console.log(err);
         next(err);
       });
 };
@@ -165,6 +173,7 @@ exports.updatePassword = function(req, res, next) {
               callback(null, client);
             })
             .catch(function(err) {
+              console.log(err);
               next(err);
             })
       },
@@ -184,7 +193,10 @@ exports.updatePassword = function(req, res, next) {
       }
   ], function(err) {
     if(err && err.status === 403) return res.status(403).send({message: err.message});
-    if(err) return next(err);
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
     res.send('Password successfully changed');
   });
 
@@ -301,7 +313,10 @@ exports.removeAccount = function(req, res, next) {
           });
     }
   ], function(err) {
-    if(err) return next(err);
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
     req.session.destroy();
     res.send('/');
   });

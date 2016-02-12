@@ -21,6 +21,9 @@ module.exports = function(sequelize, DataTypes) {
         },
         hashedPassword: {
           type: DataTypes.STRING(50)
+        },
+        password: {
+          type: DataTypes.VIRTUAL
         }
       },
       {
@@ -30,8 +33,8 @@ module.exports = function(sequelize, DataTypes) {
           }
         },
         instanceMethods: {
-          checkPassword: function(password, salt, hashedPassword) {
-            return hashedPassword === this.encryptPassword(password, salt);
+          checkPassword: function(password) {
+            return this.hashedPassword === Manager.encryptPassword(password, this.salt);
           }
         },
         timestamps: true,
@@ -42,6 +45,13 @@ module.exports = function(sequelize, DataTypes) {
   Manager.beforeCreate(function(manager) {
     manager.salt = crypto.randomBytes(16).toString('hex');
     manager.hashedPassword = this.encryptPassword(manager.password, manager.salt);
+  });
+
+  Manager.beforeUpdate(function(manager) {
+    if(manager.password) {
+      manager.salt = crypto.randomBytes(16).toString('hex');
+      manager.hashedPassword = this.encryptPassword(manager.password, manager.salt);
+    }
   });
 
   return Manager;

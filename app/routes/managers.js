@@ -1,29 +1,40 @@
-module.exports = function(app) {};
+var manager = require('../controllers/managers'),
+    loadManager = require('../lib/middlewares/loadManager'),
+    checkManager = require('../lib/middlewares/checkManager');
+
+module.exports = function(app) {
+
+  app.route('/api').get(loadManager, manager.index);
+  app.route('/api/authenticate')
+      .get(loadManager, manager.index)
+      .post(manager.authenticate);
+
+  app.route('/api/manager')
+      .get(checkManager, manager.manager)
+      .post(checkManager, manager.create)
+      .delete(checkManager, manager.remove)
+      .put(checkManager, manager.update);
+
+  app.get('/api/cancel', manager.cancel);
+  app.get('/api/logout', manager.logout);
+};
 /*var router = require('express').Router(),
 		main = require('../../controllers/api/main'),
 		manager = require('../../controllers/api/managers'),
 		slider = require('../../controllers/api/slider'),
 		sale = require('../../controllers/api/sale'),
 		discount = require('../../controllers/api/discounts'),
-		loadManager = require('../../lib/middlewares/loadManager'),
+		,
 		checkManager = require('../../lib/middlewares/checkManager');
 
 router.use(loadManager);		
 
-router.get('/', main.index);
-router.route('/authenticate')
-		.get(main.index)
-		.post(manager.authenticate);
-router.get('/cancel', main.cancel);
-router.get('/logout', main.logout);		
+
+
 
 router.use(checkManager);
 
-router.route('/manager')
-		.get(main.manager)
-		.post(manager.add)
-		.delete(manager.remove)
-		.put(manager.update);
+
 
 router.route('/products/add')
 		.get(main.addProduct)
