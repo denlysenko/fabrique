@@ -74,7 +74,8 @@ exports.logout = function(req, res) {
 
 exports.manager = function(req, res) {
   res.render('api/manager', {
-    title: 'Managers'
+    title: 'Managers',
+    manager: req.session.manager
   });
 };
 

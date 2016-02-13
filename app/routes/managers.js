@@ -23,17 +23,7 @@ module.exports = function(app) {
 		manager = require('../../controllers/api/managers'),
 		slider = require('../../controllers/api/slider'),
 		sale = require('../../controllers/api/sale'),
-		discount = require('../../controllers/api/discounts'),
-		,
-		checkManager = require('../../lib/middlewares/checkManager');
-
-router.use(loadManager);		
-
-
-
-
-router.use(checkManager);
-
+		discount = require('../../controllers/api/discounts')
 
 
 router.route('/products/add')
@@ -62,9 +52,5 @@ router.route('/sale/:code')
 		.get(sale.sale)
 		.post(sale.addToSale);
 
-router.route('/discounts')
-		.get(main.discounts)
-		.post(discount.add)
-		.delete(discount.remove);
 
 module.exports = router;*/

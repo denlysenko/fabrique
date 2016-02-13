@@ -29,9 +29,5 @@ exports.sale = function(req, res) {
 	});
 };
 
-exports.discounts = function(req, res) {
-	res.render('app/discounts', {
-		title: 'Discount Cards',
-	});
-};
+
 

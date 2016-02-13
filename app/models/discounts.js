@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
           },
           validate: {
             is: {
-              args: [['\d{8}']],
+              args: /\d{8}/,
               msg: 'Card number must contain 8 digits'
             }
           }
