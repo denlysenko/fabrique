@@ -1,4 +1,4 @@
-var Product = require('../models/products'),
+/*var Product = require('../models/products'),
 		Image = require('../models/images'),
 		DataSheet = require('../models/data_sheet'),
 		Sale = require('../models/sale'),
@@ -209,4 +209,4 @@ exports.addReview = function(req, res, next) {
 		if(err) return next(err);
 		res.redirect('back');
 	});			
-};
+};*/

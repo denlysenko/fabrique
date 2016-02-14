@@ -12,5 +12,10 @@ router.route('/basket/:code')
 
 
 module.exports = router;*/
+var manager = require('../controllers/products/manager');
 
-module.exports = function(app) {};
+module.exports = function(app) {
+	app.route('/api/products/add')
+			.get(manager.addProduct)
+			.post(manager.saveProduct);
+};

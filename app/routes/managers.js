@@ -26,9 +26,7 @@ module.exports = function(app) {
 		discount = require('../../controllers/api/discounts')
 
 
-router.route('/products/add')
-		.get(main.addProduct)
-		.post(require('.././products/add'));
+
 router.get('/products/edit', main.editProduct);
 router.route('/products/edit/:code')
 		.get(require('.././products/edit'))

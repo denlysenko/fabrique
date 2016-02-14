@@ -2,8 +2,8 @@ var lwip = require('lwip'),
 		fs = require('fs'),
 		normalize = require('path').normalize,
 		async = require('async'),
-		config = require('../config'),
-		HttpError = require('../errors/index').HttpError;
+		config = require('../../../../config'),
+		HttpError = require('../errors').HttpError;
 
 exports.load = function(image, callback) {
 	lwip.open(image, function(err, img) {
@@ -13,7 +13,7 @@ exports.load = function(image, callback) {
 				img.resize(config.get('images:width'), config.get('images:height'), function(err, img) {
 					if(err) return callback(err);
 					var pathTmp = image.replace('tmp', '');
-					var pathImg = normalize(__dirname + '../../public/images/products' + pathTmp);
+					var pathImg = normalize(__dirname + '../../../../../public/images/products' + pathTmp);
 					fs.stat(pathImg, function(err, stat) {
 						if(!err) return callback(new HttpError(400, 'Bad Request'));
 						img.writeFile(pathImg, function(err) {
@@ -29,7 +29,7 @@ exports.load = function(image, callback) {
 				img.resize(config.get('thumbs:width'),config.get('thumbs:height'), function(err, img) {
 					if(err) return callback(err);
 					var pathTmp = image.replace('tmp', '');
-					var pathImg = normalize(__dirname + '../../public/images/thumbs' + pathTmp);
+					var pathImg = normalize(__dirname + '../../../../../public/images/thumbs' + pathTmp);
 					fs.stat(pathImg, function(err, stat) {
 						if(!err) return callback(new HttpError(400, 'Bad Request'));
 						img.writeFile(pathImg, function(err) {
