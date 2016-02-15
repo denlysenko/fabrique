@@ -15,7 +15,18 @@ module.exports = router;*/
 var manager = require('../controllers/products/manager');
 
 module.exports = function(app) {
+
 	app.route('/api/products/add')
 			.get(manager.addProduct)
 			.post(manager.saveProduct);
+
+	app.route('/api/products/edit')
+			.get(manager.showSearchForm)
+			//.post(manager.saveProduct);
+
+  app.route('/api/products/search')
+      .get(manager.searchProduct);
+
+  app.route('/api/products/edit/:code')
+      .get(manager.showProduct);
 };

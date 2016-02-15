@@ -134,11 +134,95 @@ exports.saveProduct = function(req, res, next) {
       });
 };
 
-
-exports.editProduct = function(req, res) {
+exports.showSearchForm = function(req, res) {
   res.render('api/products/search', {
     title: 'Edit Product',
     manager: req.session.manager,
     page: 'edit'
   });
+};
+
+exports.searchProduct = function(req, res, next) {
+  var query = require('url').parse(req.url).query;
+  var parts = query.split('=');
+
+  if(parts[0] === 'category') {
+    models.product.findAll({
+      where: {
+        category: parts[1].toLowerCase()
+      }
+    })
+        .then(function(products) {
+          if(!products.length) {
+            res.error('Products not found');
+            return res.redirect('back');
+          }
+
+          res.result(products);
+          res.redirect('back');
+        })
+        .catch(function(err) {
+          next(err);
+        });
+  } else if(parts[0] === 'code') {
+    models.product.findAll({
+      where: {
+        productCode: parts[1].toLowerCase()
+      }
+    })
+        .then(function(products) {
+          if(!products.length) {
+            res.error('Products not found');
+            return res.redirect('back');
+          }
+
+          res.result(products);
+          res.redirect('back');
+        })
+        .catch(function(err) {
+          next(err);
+        });
+  } else if(parts[0] === 'title') {
+    models.product.findAll({
+      where: {
+        title: parts[1].toLowerCase()
+      }
+    })
+        .then(function(products) {
+          if(!products.length) {
+            res.error('Products not found');
+            return res.redirect('back');
+          }
+
+          res.result(products);
+          res.redirect('back');
+        })
+        .catch(function(err) {
+          next(err);
+        });
+  }
+};
+
+exports.showProduct = function(req, res, next) {
+  var code = req.params.code;
+
+  models.product.findOne({
+    where: {
+      productCode: code
+    },
+    include: [
+      {model: models.dataSheet, as: 'dataSheet'},
+      {model: models.image, as: 'images'}
+    ]
+  })
+      .then(function(product) {
+        if(!product) return next(new HttpError(404, 'Product Not Found'));
+        res.render('api/products/edit', {
+          title: 'Edit ' + product.title,
+          product: product
+        });
+      })
+      .catch(function(err) {
+        next(err);
+      });
 };

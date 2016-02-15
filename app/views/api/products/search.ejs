@@ -3,7 +3,7 @@
   <h3>Search product</h3>
   <hr>
   <%- include('../../messages')%>
-  <form action="/app/products/search" method="get" class="search">
+  <form action="/api/products/search" method="get" class="search">
     <div class="select dropdown form-group">
       <span data-toggle="dropdown">
         <input type="text" placeholder="Product Category" class="form-control" name="category">
@@ -18,7 +18,7 @@
       <button type="submit" class="btn btn-default">Search Product</button>
     </div>
   </form>   
-  <form action="/app/products/search" method="get" class="search">
+  <form action="/api/products/search" method="get" class="search">
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Product Code" name="code">
     </div>
@@ -26,7 +26,7 @@
       <button type="submit" class="btn btn-default">Search Product</button>
     </div>
   </form>
-  <form action="/app/products/search" method="get" class="search">
+  <form action="/api/products/search" method="get" class="search">
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Product Title" name="title">
     </div>

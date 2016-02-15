@@ -13,17 +13,17 @@
       <tbody>
 	<% results.forEach(function(result){%>
       <tr>
-        <td><%= result.code %></td>
+        <td><%= result.productCode %></td>
         <td><%= result.category %></td>
         <td><%= result.title %></td>
         <td><%= result.price %></td>
         <td>
           <% if(page === 'edit'){%>
-            <a href="/api/products/edit/<%= result.code %>">Show Product</a>
+            <a href="/api/products/edit/<%= result.productCode %>">Show Product</a>
           <%} else if(page === 'slider'){%>
-            <a href="/api/slider/<%= result.code %>">Show Product</a>
+            <a href="/api/slider/<%= result.productCode %>">Show Product</a>
           <%} else {%>
-            <a href="/api/sale/<%= result.code %>">Show Product</a>
+            <a href="/api/sale/<%= result.productCode %>">Show Product</a>
           <%}%>    
         </td>
       </tr>
