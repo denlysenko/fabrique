@@ -29,4 +29,8 @@ module.exports = function(app) {
 
   app.route('/api/products/edit/:code')
       .get(manager.showProduct);
+
+	app.route('/api/products/delete_image/:id').delete(manager.removeImage);
+
+	app.route('/api/products/delete_feature/:id').delete(manager.removeDataSheet);
 };

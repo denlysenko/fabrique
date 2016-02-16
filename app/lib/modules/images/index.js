@@ -53,12 +53,11 @@ exports.load = function(image, callback) {
 	});
 };
 
-exports.remove = function(rows, callback) {
-	async.each(rows, function(row, cb) {
+exports.remove = function(img, callback) {
+	async.each(img, function(row, cb) {
 		try {
 			for(var key in row) {
-				if(key === 'id' || key === 'code') continue;
-				var path = normalize(__dirname + '../../public' + row[key]);
+				var path = normalize(__dirname + __dirname + '../../../../../public' + row[key]);
 				fs.unlinkSync(path);
 			}
 			cb(null);

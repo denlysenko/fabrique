@@ -6,7 +6,7 @@
   <form action="/api/products/edit/<%= product.productCode %>?_method=PUT" method="post" enctype="multipart/form-data">
     <div class="form-group">
       <label>Product Code</label>
-      <input type="text" name="code" class="form-control" value="<%= product.productCode %>">
+      <input type="text" name="code" class="form-control" value="<%= product.productCode %>" disabled>
     </div>
     <div class="form-group">
       <label>Product Category</label>

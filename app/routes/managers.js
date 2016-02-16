@@ -32,8 +32,7 @@ router.route('/products/edit/:code')
 		.get(require('.././products/edit'))
 		.put(require('.././products/update'));
 router.get('/products/search', require('.././products/search'));
-router.delete('/products/delete_image/:id', require('.././api/images').remove);
-router.delete('/products/delete_feature/:id', require('.././api/data_sheet').remove);
+
 router.delete('/products/remove/:code', require('.././products/remove'));
 
 router.get('/slider/remove', slider.sliderRemove);

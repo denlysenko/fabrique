@@ -226,3 +226,54 @@ exports.showProduct = function(req, res, next) {
         next(err);
       });
 };
+
+exports.removeImage = function(req, res, next) {
+  async.waterfall([
+      function(callback) {
+        models.image.findById(req.params.id)
+            .then(function(image) {
+              callback(null, image);
+            })
+            .catch(function(err) {
+              callback(err);
+            });
+      },
+      function(image, callback) {
+        image.destroy()
+            .then(function(image) {
+              callback(null, image);
+            })
+            .catch(function(err) {
+              callback(err);
+            });
+      },
+      function(image, callback) {
+        image.remove({
+          imageUrl: image.imageUrl,
+          thumbUrl: image.thumbUrl
+        }, callback);
+      }
+  ], function(err) {
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
+    res.message('Image successfully removed', 'bg-success');
+    res.end();
+  });
+};
+
+exports.removeDataSheet = function(req, res, next) {
+  models.dataSheet.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+      .then(function() {
+        res.message('Feature successfully removed', 'bg-success');
+        res.end();
+      })
+      .catch(function(err) {
+        next(err);
+      });
+};
