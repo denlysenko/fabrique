@@ -34,6 +34,7 @@ app.use(require('./app/lib/modules/search-results/index'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./app/lib/middlewares/loadRates'));
+
 require('./app/routes')(app);
 
 // catch 404 and forward to errors handler

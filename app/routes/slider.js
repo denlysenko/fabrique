@@ -1,17 +1,18 @@
 'use strict';
 
-var slider = require('../controllers/slider');
+var slider = require('../controllers/slider'),
+    checkManager = require('../lib/middlewares/checkManager');
 
 module.exports = function(app) {
 
   app.route('/api/slider')
-      .get(slider.showSearchForm);
+      .get(checkManager, slider.showSearchForm);
 
   app.route('/api/slider/:code')
-      .get(slider.showProduct)
-      .post(slider.addProduct);
+      .get(checkManager, slider.showProduct)
+      .post(checkManager, slider.addProduct);
 
   app.route('/api/slider_remove/:id?')
-      .get(slider.showRemoveForm)
-      .delete(slider.removeFromSlider);
+      .get(checkManager, slider.showRemoveForm)
+      .delete(checkManager, slider.removeFromSlider);
 };

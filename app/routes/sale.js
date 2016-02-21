@@ -1,17 +1,18 @@
 'use strict';
 
-var sale = require('../controllers/sale');
+var sale = require('../controllers/sale'),
+    checkManager = require('../lib/middlewares/checkManager');
 
 module.exports = function(app) {
 
   app.route('/api/sale')
-      .get(sale.showSearchForm);
+      .get(checkManager, sale.showSearchForm);
 
   app.route('/api/sale/:code')
-      .get(sale.showProduct)
-      .post(sale.addProduct);
+      .get(checkManager, sale.showProduct)
+      .post(checkManager, sale.addProduct);
 
   app.route('/api/sale_remove/:id?')
-      .get(sale.showRemoveForm)
-      .delete(sale.removeFromSale);
+      .get(checkManager, sale.showRemoveForm)
+      .delete(checkManager, sale.removeFromSale);
 };
