@@ -3,10 +3,11 @@
   <h3>Add Product on sale</h3>
   <hr>
   <%- include('../../messages')%>
-  <form action="/api/sale/<%= product.code %>" method="post">
+  <% if(product) { %>
+  <form action="/api/sale/<%= product.productCode %>" method="post">
     <div class="form-group">
       <label>Product Code</label>
-      <input type="text" name="code" class="form-control disabled" value="<%= product.code %>">
+      <input type="text" name="code" class="form-control disabled" value="<%= product.productCode %>">
     </div>
     <div class="form-group">
       <label>Product Title</label>
@@ -24,6 +25,7 @@
     <div class="form-group">
       <button type="submit" class="btn btn-default">Add On Sale</button>
     </div>
-  </form> 
+  </form>
+  <% } %>
 </div>
 <%- include('../partials/footer')%>

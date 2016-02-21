@@ -18,13 +18,13 @@
       <tbody>
   <% results.forEach(function(result){%>
       <tr>
-        <td><%= result.code %></td>
+        <td><%= result.productCode %></td>
         <td><%= result.title %></td>
-        <td><%= result.new_price %></td>
-        <td><%= result.old_price %></td>
+        <td><%= result.newPrice %></td>
+        <td><%= result.oldPrice %></td>
         <td><%= result.discount %></td>
         <td>
-          <a href="/api/sale/remove/<%= result.id %>" data-action="delete">Remove From Sale</a>
+          <a href="/api/sale_remove/<%= result.id %>" data-action="delete">Remove From Sale</a>
         </td>
       </tr>
   <%})%>
