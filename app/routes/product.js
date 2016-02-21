@@ -28,7 +28,8 @@ module.exports = function(app) {
       .get(manager.searchProduct);
 
   app.route('/api/products/edit/:code')
-      .get(manager.showProduct);
+      .get(manager.showProduct)
+			.put(manager.updateProduct);
 
 	app.route('/api/products/delete_image/:id').delete(manager.removeImage);
 

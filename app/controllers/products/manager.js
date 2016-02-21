@@ -2,7 +2,8 @@
 
 var models = require('../../models'),
     async = require('async'),
-    image = require('../../lib/modules/images');
+    Image = require('../../lib/modules/images'),
+    _ = require('lodash');
 
 exports.addProduct = function(req, res) {
   res.render('api/products/add', {
@@ -65,7 +66,7 @@ exports.saveProduct = function(req, res, next) {
                       return res.redirect('back');
                     }
 
-                    image.load(photo.path, function(err, results) {
+                    Image.load(photo.path, function(err, results) {
                       if(err && err.status === 400) {
                         res.error('Image already exists');
                         return res.redirect('back');
@@ -95,7 +96,7 @@ exports.saveProduct = function(req, res, next) {
                     return res.redirect('back');
                   }
 
-                  image.load(req.files.photo.path, function(err, results) {
+                  Image.load(req.files.photo.path, function(err, results) {
                     if(err && err.status === 400) {
                       res.error('Image already exists');
                       return res.redirect('back');
@@ -227,6 +228,136 @@ exports.showProduct = function(req, res, next) {
       });
 };
 
+exports.updateProduct = function(req, res, next) {
+  var updatedProduct;
+  return models.sequelize.transaction(function(t) {
+    return models.product.findOne({
+      where: {
+        productCode: req.params.code
+      }
+    }, {transaction: t})
+        .then(function(product) {
+          updatedProduct = product;
+          _.extend(product, req.body.product);
+          return product.save({transaction: t})
+              .then(function(product) {
+                if(req.body.feature) {
+                  var dataSheet = [];
+                  if(typeof req.body.feature === 'string') {
+                    dataSheet.push({
+                      productCode: product.productCode,
+                      feature: req.body.feature,
+                      characteristic: req.body.characteristic
+                    });
+                  } else {
+                    for(var i = 0; i < req.body.feature.length; i++) {
+                      dataSheet.push({
+                        productCode: product.productCode,
+                        feature: req.body.feature[i],
+                        characteristic: req.body.characteristic[i]
+                      });
+                    }
+                  }
+                  return models.dataSheet.bulkCreate(dataSheet, {validate: true, transaction: t})
+                }
+
+              })
+        })
+  }).then(function() {
+    if(req.files.photo) {
+      var images = [];
+      if(Array.isArray(req.files.photo)) {
+        async.eachSeries(req.files.photo, function(photo, callback) {
+          if(photo.mimetype.indexOf('jpeg') === -1 && photo.mimetype.indexOf('png') === -1) {
+            res.error('Image should be in JPEG or PNG format');
+            return res.redirect('back');
+          }
+
+          Image.load(photo.path, function(err, results) {
+            if(err && err.status === 400) {
+              res.error('Image already exists');
+              return res.redirect('back');
+            }
+
+            if(err) {
+              callback(err);
+            }
+
+            images.push({
+              productCode: updatedProduct.productCode,
+              imageUrl: results[0],
+              thumbUrl: results[1]
+            });
+            callback();
+          });
+        }, function(err) {
+          if (err) {
+            console.log(err);
+            return next(err);
+          }
+          models.image.bulkCreate(images)
+              .then(function() {
+                res.message('Product with code ' + updatedProduct.productCode + ' successfully updated', 'bg-success');
+                res.redirect('back');
+              })
+              .catch(function(err) {
+                console.log(err);
+                next(err);
+              });
+        });
+
+      } else {
+        if(req.files.photo.mimetype.indexOf('jpeg') ===  -1 && req.files.photo.mimetype.indexOf('png') === -1) {
+          res.error('Image should be in JPEG, JPG or PNG format');
+          return res.redirect('back');
+        }
+
+        Image.load(req.files.photo.path, function(err, results) {
+          if(err && err.status === 400) {
+            res.error('Image already exists');
+            return res.redirect('back');
+          }
+
+          if(err) {
+            console.log(err);
+            return next(err);
+          }
+
+          images.push({
+            productCode: updatedProduct.productCode,
+            imageUrl: results[0],
+            thumbUrl: results[1]
+          });
+
+          models.image.bulkCreate(images)
+              .then(function() {
+                res.message('Product with code ' + updatedProduct.productCode + ' successfully updated', 'bg-success');
+                res.redirect('back');
+              })
+              .catch(function(err) {
+                console.log(err);
+                next(err);
+              });
+        });
+      }
+    } else {
+      res.message('Product with code ' + updatedProduct.productCode + ' successfully updated', 'bg-success');
+      res.redirect('back');
+    }
+  })
+      .catch(function(err) {
+        if(err instanceof models.sequelize.ValidationError) {
+          res.error(err.message);
+          return res.redirect('back');
+        }
+
+        if(err) {
+          console.log(err);
+          next(err);
+        }
+      });
+};
+
 exports.removeImage = function(req, res, next) {
   async.waterfall([
       function(callback) {
@@ -240,7 +371,7 @@ exports.removeImage = function(req, res, next) {
       },
       function(image, callback) {
         image.destroy()
-            .then(function(image) {
+            .then(function() {
               callback(null, image);
             })
             .catch(function(err) {
@@ -248,7 +379,7 @@ exports.removeImage = function(req, res, next) {
             });
       },
       function(image, callback) {
-        image.remove({
+        Image.remove({
           imageUrl: image.imageUrl,
           thumbUrl: image.thumbUrl
         }, callback);

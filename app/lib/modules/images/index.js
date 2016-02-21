@@ -56,10 +56,8 @@ exports.load = function(image, callback) {
 exports.remove = function(img, callback) {
 	async.each(img, function(row, cb) {
 		try {
-			for(var key in row) {
-				var path = normalize(__dirname + __dirname + '../../../../../public' + row[key]);
-				fs.unlinkSync(path);
-			}
+      var path = normalize(__dirname + '../../../../../public' + row);
+      fs.unlinkSync(path);
 			cb(null);
 		} catch(err) {
 			return cb(err);
