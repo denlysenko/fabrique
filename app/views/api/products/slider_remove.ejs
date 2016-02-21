@@ -16,11 +16,11 @@
       <tbody>
   <% results.forEach(function(result){%>
       <tr>
-        <td><%= result.code %></td>
+        <td><%= result.productCode %></td>
         <td><%= result.title %></td>
         <td><%= result.slogan %></td>
         <td>
-          <a href="/api/slider/remove/<%= result.id %>" data-action="delete">Remove From Slider</a>
+          <a href="/api/slider_remove/<%= result.id %>" data-action="delete">Remove From Slider</a>
         </td>
       </tr>
   <%})%>

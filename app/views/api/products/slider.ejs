@@ -3,10 +3,10 @@
   <h3>Add Product for slider</h3>
   <hr>
   <%- include('../../messages')%>
-  <form action="/api/slider/<%= product.code %>" method="post">
+  <form action="/api/slider/<%= product.productCode %>" method="post">
     <div class="form-group">
       <label>Product Code</label>
-      <input type="text" name="code" class="form-control disabled" value="<%= product.code %>">
+      <input type="text" name="code" class="form-control disabled" value="<%= product.productCode %>">
     </div>
     <div class="form-group">
       <label>Product Category</label>
@@ -35,14 +35,16 @@
     </div>
     <div class="form-group">
       <label>Choose Photo</label>
+      <% if(product.images.length) { %>
       <ul class="photo-list">
-        <%images.forEach(function(image){ %>
+        <%product.images.forEach(function(image){ %>
           <li>
-            <img src="<%= image.thumb %>" height="130" width="241" alt="<%= product.title %>">
-            <input type="radio" class="form-control" name="image" value="<%= image.image %>" required>
+            <img src="<%= image.thumbUrl %>" height="130" width="241" alt="<%= product.title %>">
+            <input type="radio" class="form-control" name="image" value="<%= image.imageUrl %>" required>
           </li>
         <%})%>
       </ul>
+      <% } %>
     </div>
     <hr>
     <div class="form-group">

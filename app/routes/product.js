@@ -21,8 +21,7 @@ module.exports = function(app) {
 			.post(manager.saveProduct);
 
 	app.route('/api/products/edit')
-			.get(manager.showSearchForm)
-			//.post(manager.saveProduct);
+			.get(manager.showSearchForm);
 
   app.route('/api/products/search')
       .get(manager.searchProduct);
@@ -30,6 +29,9 @@ module.exports = function(app) {
   app.route('/api/products/edit/:code')
       .get(manager.showProduct)
 			.put(manager.updateProduct);
+
+	app.route('/api/products/remove/:code')
+			.delete(manager.removeProduct);
 
 	app.route('/api/products/delete_image/:id').delete(manager.removeImage);
 

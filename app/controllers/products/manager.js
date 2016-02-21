@@ -408,3 +408,108 @@ exports.removeDataSheet = function(req, res, next) {
         next(err);
       });
 };
+
+exports.removeProduct = function(req, res, next) {
+  var code = req.params.code;
+  async.series([
+    function(callback) {
+      models.product.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          })
+    },
+    function(callback) {
+      models.dataSheet.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          });
+    },
+    function(callback) {
+      models.images.findAll({
+        where: {
+          productCode: code
+        }
+      }).
+          then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          });
+    },
+    function(callback) {
+      models.images.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          })
+    },
+    function(callback) {
+      models.sale.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          })
+    },
+    function(callback) {
+      models.slider.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          .catch(function(err) {
+            callback(err);
+          });
+    }
+  ], function(err, results) {
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
+    if(results[2].length) {
+      Image.remove({
+        imageUrl: results[2].imageUrl,
+        thumbUrl: results[2].thumbUrl
+      }, function(err) {
+        if(err) {
+          console.log(err);
+          return next(err);
+        }
+        res.message('Product with code ' + code + ' successfully removed', 'bg-success');
+        res.send('/api/products/edit');
+      });
+    } else {
+      res.message('Product with code ' + code + ' successfully removed', 'bg-success');
+      res.send('/api/products/edit');
+    }
+  });
+};
