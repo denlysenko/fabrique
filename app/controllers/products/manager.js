@@ -3,7 +3,8 @@
 var models = require('../../models'),
     async = require('async'),
     Image = require('../../lib/modules/images'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    HttpError = require('../../lib/modules/errors').HttpError;
 
 exports.addProduct = function(req, res) {
   res.render('api/products/add', {
@@ -43,14 +44,14 @@ exports.saveProduct = function(req, res, next) {
           newProduct = product;
           if(typeof feature === 'string') {
             dataSheet.push({
-              productCode: product.productCode,
+              productCode: newProduct.productCode,
               feature: feature,
               characteristic: characteristic
             });
           } else {
             for(var i = 0; i < feature.length; i++) {
               dataSheet.push({
-                productCode: product.productCode,
+                productCode: newProduct.productCode,
                 feature: feature[i],
                 characteristic: characteristic[i]
               });
@@ -73,7 +74,7 @@ exports.saveProduct = function(req, res, next) {
                       }
 
                       if(err) {
-                        callback(err);
+                        return callback(err);
                       }
 
                       images.push({
@@ -220,7 +221,8 @@ exports.showProduct = function(req, res, next) {
         if(!product) return next(new HttpError(404, 'Product Not Found'));
         res.render('api/products/edit', {
           title: 'Edit ' + product.title,
-          product: product
+          product: product,
+          manager: req.session.manager
         });
       })
       .catch(function(err) {
@@ -413,7 +415,7 @@ exports.removeProduct = function(req, res, next) {
   var code = req.params.code;
   async.series([
     function(callback) {
-      models.product.destroy({
+      return models.dataSheet.destroy({
         where: {
           productCode: code
         }
@@ -421,38 +423,64 @@ exports.removeProduct = function(req, res, next) {
           .then(function() {
             callback();
           })
-          .catch(function(err) {
-            callback(err);
-          })
+          //.catch(function(err) {
+          //  callback(err);
+          //});
     },
     function(callback) {
-      models.dataSheet.destroy({
+      return  models.image.findAll({
         where: {
           productCode: code
         }
       })
-          .then(function() {
-            callback();
+          .then(function(images) {
+            callback(null, images);
           })
           .catch(function(err) {
             callback(err);
           });
     },
     function(callback) {
-      models.images.findAll({
+      return models.image.destroy({
         where: {
           productCode: code
         }
-      }).
-          then(function() {
+      })
+          .then(function() {
             callback();
           })
-          .catch(function(err) {
-            callback(err);
-          });
+          //.catch(function(err) {
+          //  callback(err);
+          //})
     },
     function(callback) {
-      models.images.destroy({
+      return models.sale.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          //.catch(function(err) {
+          //  callback(err);
+          //})
+    },
+    function(callback) {
+      return models.slider.destroy({
+        where: {
+          productCode: code
+        }
+      })
+          .then(function() {
+            callback();
+          })
+          //.catch(function(err) {
+          //  callback(err);
+          //});
+    },
+    function(callback) {
+      return models.product.destroy({
         where: {
           productCode: code
         }
@@ -463,50 +491,28 @@ exports.removeProduct = function(req, res, next) {
           .catch(function(err) {
             callback(err);
           })
-    },
-    function(callback) {
-      models.sale.destroy({
-        where: {
-          productCode: code
-        }
-      })
-          .then(function() {
-            callback();
-          })
-          .catch(function(err) {
-            callback(err);
-          })
-    },
-    function(callback) {
-      models.slider.destroy({
-        where: {
-          productCode: code
-        }
-      })
-          .then(function() {
-            callback();
-          })
-          .catch(function(err) {
-            callback(err);
-          });
     }
   ], function(err, results) {
     if(err) {
       console.log(err);
       return next(err);
     }
-    if(results[2].length) {
-      Image.remove({
-        imageUrl: results[2].imageUrl,
-        thumbUrl: results[2].thumbUrl
+
+    if(results[1].length) {
+      async.each(results[1], function(item, done) {
+        Image.remove({
+          imageUrl: item.imageUrl,
+          thumbUrl: item.thumbUrl
+        }, done)
       }, function(err) {
-        if(err) {
-          console.log(err);
-          return next(err);
-        }
-        res.message('Product with code ' + code + ' successfully removed', 'bg-success');
-        res.send('/api/products/edit');
-      });
+          if(err) {
+            console.log(err);
+            return next(err);
+          }
+          res.message('Product with code ' + code + ' successfully removed', 'bg-success');
+          res.send('/api/products/edit');
+        });
+
     } else {
       res.message('Product with code ' + code + ' successfully removed', 'bg-success');
       res.send('/api/products/edit');
