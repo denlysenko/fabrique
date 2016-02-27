@@ -1,17 +1,5 @@
-/*var router = require('express').Router(),
-		product = require('./products'),
-		checkAuth = require('./checkAuth');
+'use strict';
 
-router.get('/:code', product.show);
-
-router.post('/review/:code', product.addReview);
-
-router.route('/basket/:code')
-		.post(checkAuth, product.addToBasket)
-		.delete(product.removeFromBasket);
-
-
-module.exports = router;*/
 var manager = require('../controllers/products/manager'),
     checkManager = require('../lib/middlewares/checkManager');
 

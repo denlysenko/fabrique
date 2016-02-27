@@ -1,10 +1,18 @@
-var Client = require('.././clients');
+var Client = require('../../models').client;
 
 module.exports = function(req, res ,next) {
 	if(!req.session.uid) return next();
-	Client.find(req.session.uid, function(err, user) {
-		if(err) return next(err);
-		user = res.locals.user = user;
-		next();
-	});
+	Client.findOne({
+    where: {
+      email: req.session.uid
+    }
+  })
+      .then(function(user) {
+		    user = res.locals.user = user;
+		    next();
+	    })
+      .catch(function(err) {
+        next(err);
+      });
+
 };

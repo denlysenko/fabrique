@@ -212,17 +212,23 @@ exports.subscription = function(req, res, next) {
 exports.subscribe = function(req, res, next) {
   var email = req.body.email;
 
-  if(!validator.isEmail(email)) {
-    return res.status(403).json(new HttpError(403, 'Please, type correct email'));
+  if(!validator.isNonEmpty(email)) {
+    return res.status(403).json(new HttpError(403, 'Please, enter email'));
   }
 
-  Subscription.subscribe(email, function(err) {
-    if(err && err.code === 'ER_DUP_ENTRY') {
-      return res.status(403).json(new HttpError(403, 'You have already subscribed'));
-    }
-    if(err) return next(err);
-    res.send('You successfully subscribed to newsletter');
-  });
+  models.subscriber.create({
+    email: email
+  })
+      .then(function() {
+        res.send('You successfully subscribed to newsletter');
+      })
+      .catch(function(err) {
+        if(err instanceof ValidationError) {
+          res.status(403).json(new HttpError(403, 'You have already subscribed'));
+        } else {
+          next(err);
+        }
+      });
 };
 
 exports.orders = function(req, res, next) {

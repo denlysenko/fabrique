@@ -1,15 +1,15 @@
-//var nodemailer = require('nodemailer'),
-//		config = require('../config'),
-//		HttpError = require('../errors').HttpError,
-//		validator = require('validator'),
-//		url = require('url'),
-//		qs = require('querystring'),
-//		Product = require('../../models/products');
-//
-//var transporter = nodemailer.createTransport({
-//  service: config.get('mailer:service'),
-//  auth: config.get('mailer:auth')
-//});
+var nodemailer = require('nodemailer'),
+		config = require('../../../config'),
+		HttpError = require('../../lib/modules/errors').HttpError,
+		validator = require('validator'),
+		url = require('url'),
+		qs = require('querystring'),
+		models = require('../../models');
+
+var transporter = nodemailer.createTransport({
+  service: config.get('mailer:service'),
+  auth: config.get('mailer:auth')
+});
 
 exports.index = function(req, res, next) {
   res.render('index', {title: 'Fabrique Home Page', page: req.path});
@@ -60,13 +60,19 @@ exports.submitMessage = function(req, res, next) {
   }, function(err) {
     if(err) return next(err);
     if(subscribe) {
-      Subscription.subscribe(email, function(err) {
-        if(err && err.code === 'ER_DUP_ENTRY') {
-          return res.status(403).json(new HttpError(403, 'You have already subscribed'));
-        }
-        if(err) return next(err);
-        res.send('Your message was successfully sent');
-      });
+      models.subscriber.create({
+        email: email
+      })
+          .then(function() {
+            res.send('Your message was successfully sent');
+          })
+          .catch(function(err) {
+            if(err instanceof models.sequelize.ValidationError) {
+              return res.status(403).json(new HttpError(403, 'You have already subscribed'));
+            } else {
+              next(err);
+            }
+          });
     } else {
       res.send('Your message was successfully sent');
     }

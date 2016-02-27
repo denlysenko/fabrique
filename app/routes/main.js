@@ -1,42 +1,54 @@
 'use strict';
 
 var main = require('../controllers/main'),
+    auth = require('../controllers/auth'),
+    product = require('../controllers/products/client'),
+    loadUser = require('../lib/middlewares/loadUser'),
+    loadBasket = require('../lib/middlewares/loadBasket'),
     loadSlider = require('../lib/middlewares/loadSlider'),
     loadLast = require('../lib/middlewares/loadLast'),
-    loadMostViewed = require('../lib/middlewares/loadMostViewed');
+    loadMostViewed = require('../lib/middlewares/loadMostViewed'),
+    checkAuth = require('../lib/middlewares/checkAuth');
 
 module.exports = function(app) {
+  app.use(loadUser);
+  app.use(loadBasket);
+
   app.get('/', loadSlider, loadLast, loadMostViewed, main.index);
+  app.get('/switch/:currency', main.switchCurrency);
+  app.get('/products/:category', product.category);
+  app.get('/new/:category', product.new);
+  app.get('/product/:code', product.show);
+  app.get('/sale', product.sale);
+
+  app.route('/wishlist/:code?')
+      .get(checkAuth, product.wishlist)
+      .post(checkAuth, product.addToWishlist)
+      .delete(product.removeFromWishlist);
+
+
+  app.route('/contact')
+      .get(main.contactForm)
+      .post(main.submitMessage);
+
+  app.route('/subscribe')
+      .get(auth.subscription)
+      .post(auth.subscribe);
+
+  app.get('/delivery', main.delivery);
+  app.get('/returns', main.returns);
+  app.get('/terms', main.terms);
+  app.get('/privacy', main.privacy);
+  app.get('/about', main.about);
+
+  app.get('/FAQ', main.faq);
+
+  app.get('/back', main.back);
+
+  app.get('/search', main.search);
 };
 
-//product = require('./products'),
-//user = require('./users'),
-//cart = require('./cart'),
-//checkAuth = require('./checkAuth'),
-//loadUser = require('./loadUser');
 
-//router.use(loadUser);
-//router.use(require('./loadBasket'));
-
-//router.get('/switch/:currency', home.switchCurrency);
-//router.get('/products/:category', product.category);
-//router.get('/new/:category', product.new);
-//router.get('/sale', product.sale);
-//
-//router.route('/contact')
-//		.get(home.contactForm)
-//		.post(home.submitMessage);
-//
-//router.route('/subscribe')
-//		.get(user.subscription)
-//		.post(user.subscribe);
-//
-
-//router.route('/wishlist/:code?')
-//		.get(checkAuth, product.wishlist)
-//		.post(checkAuth, product.addToWishlist)
-//		.delete(product.removeFromWishlist);
-//
 //router.get('/cart', checkAuth, cart.show);
 //router.get('/cart/checkout', checkAuth, cart.checkout);
 //router.post('/cart/check_discount', cart.checkDiscount);
@@ -45,16 +57,6 @@ module.exports = function(app) {
 //
 //router.get('/order_history', checkAuth, user.orders);
 //
-//router.get('/delivery', home.delivery);
-//router.get('/returns', home.returns);
-//router.get('/terms', home.terms);
-//router.get('/privacy', home.privacy);
-//router.get('/about', home.about);
-//
-//router.get('/FAQ', home.faq);
-//
-//router.get('/back', home.back);
-//
-//router.get('/search', home.search);
+
 
 //module.exports = router;
