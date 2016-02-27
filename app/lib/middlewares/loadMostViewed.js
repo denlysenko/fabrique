@@ -1,9 +1,20 @@
-var Product = require('.././products');
+var models = require('../../models');
 
 module.exports = function(req, res, next) {
-	Product.findMostViewed(4, function(err, rows) {
-		if(err) return next(err);
-		mostViewed = res.locals.mostViewed = rows;
-		next();
-	});
+	models.product.findAll({
+    order: [
+        ['views', 'DESC']
+    ],
+    limit: 4,
+    include: [
+      {model: models.image, as: 'images'}
+    ]
+  })
+      .then(function(rows) {
+        mostViewed = res.locals.mostViewed = rows;
+        next();
+      })
+      .catch(function(err) {
+        next(err);
+      });
 };

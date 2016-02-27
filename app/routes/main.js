@@ -1,16 +1,14 @@
 'use strict';
 
-var main = require('../controllers/main');
+var main = require('../controllers/main'),
+    loadSlider = require('../lib/middlewares/loadSlider'),
+    loadLast = require('../lib/middlewares/loadLast'),
+    loadMostViewed = require('../lib/middlewares/loadMostViewed');
 
 module.exports = function(app) {
-  app.get('/', main.index);
+  app.get('/', loadSlider, loadLast, loadMostViewed, main.index);
 };
 
-//var router = require('express').Router(),
-/*loadSlider = require('../../lib/middlewares/loadSlider'),
- loadLast = require('../../lib/middlewares/loadLast'),
- loadMostViewed = require('../../li/middlewares/loadMostViewed'),*/
-   // main = require('../controllers/main');
 //product = require('./products'),
 //user = require('./users'),
 //cart = require('./cart'),
@@ -20,7 +18,6 @@ module.exports = function(app) {
 //router.use(loadUser);
 //router.use(require('./loadBasket'));
 
-//router.get('/', /*loadSlider, loadLast, loadMostViewed,*/ home.index);
 //router.get('/switch/:currency', home.switchCurrency);
 //router.get('/products/:category', product.category);
 //router.get('/new/:category', product.new);

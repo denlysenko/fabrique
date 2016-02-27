@@ -4,7 +4,7 @@
     	<% if(sliders.length){ %>
     	<% sliders.forEach(function(slider, i){%>
       <div class="item <% if(i === 0){ %> active <% } %>">
-        <img src="<%= slider.image %>" alt="<%= slider.title %>">
+        <img src="<%= slider.imageUrl %>" alt="<%= slider.title %>">
         <div class="caption">
           <h3><%= slider.title %></h3>
           <p><%= slider.slogan %></p>
@@ -18,7 +18,7 @@
 		<div class="sale">
 		  <h3>Sale on <span class="sale-inline-20"></span> <small>new lines just added!</small>
 		  </h3>
-		  <img src="/app/lib/modules/images/others/towels.png" alt="sale">
+		  <img src="/images/others/towels.png" alt="sale">
 		  <a href="/sale" class="btn btn-special" role="button">browse</a>
 		</div>
 		<div class="newsletter-subscribe">

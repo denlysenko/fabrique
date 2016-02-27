@@ -1,9 +1,12 @@
-var Slider = require('.././slider');
+var Slider = require('../../models').slider;
 
 module.exports = function(req, res, next) {
-	Slider.find(function(err, sliders) {
-		if(err) return next(err);
-		sliders = res.locals.sliders = sliders;
-		next();
-	});
+  Slider.findAll()
+      .then(function(rows) {
+        sliders = res.locals.sliders = rows;
+        next();
+      })
+      .catch(function(err) {
+        next(err);
+      });
 };

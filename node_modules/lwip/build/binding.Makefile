@@ -3,4 +3,4 @@
 export builddir_name ?= ./build/.
 .PHONY: all
 all:
-	$(MAKE) lwip_image lwip_decoder lwip_encoder
+	$(MAKE) lwip_decoder lwip_image lwip_encoder
