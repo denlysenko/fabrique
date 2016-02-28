@@ -3,16 +3,12 @@
 var main = require('../controllers/main'),
     auth = require('../controllers/auth'),
     product = require('../controllers/products/client'),
-    loadUser = require('../lib/middlewares/loadUser'),
-    loadBasket = require('../lib/middlewares/loadBasket'),
     loadSlider = require('../lib/middlewares/loadSlider'),
     loadLast = require('../lib/middlewares/loadLast'),
     loadMostViewed = require('../lib/middlewares/loadMostViewed'),
     checkAuth = require('../lib/middlewares/checkAuth');
 
 module.exports = function(app) {
-  app.use(loadUser);
-  app.use(loadBasket);
 
   app.get('/', loadSlider, loadLast, loadMostViewed, main.index);
   app.get('/switch/:currency', main.switchCurrency);
@@ -35,7 +31,10 @@ module.exports = function(app) {
       .get(auth.subscription)
       .post(auth.subscribe);
 
-  app.post('/product/review/:code', product.addReview);
+  app.post('/product/review/:code', checkAuth, product.addReview);
+  app.route('/product/basket/:code')
+    .post(checkAuth, product.addToBasket)
+    .delete(checkAuth, product.removeFromBasket);
 
   app.get('/delivery', main.delivery);
   app.get('/returns', main.returns);
@@ -51,11 +50,7 @@ module.exports = function(app) {
 };
 
 
-//router.get('/cart', checkAuth, cart.show);
-//router.get('/cart/checkout', checkAuth, cart.checkout);
-//router.post('/cart/check_discount', cart.checkDiscount);
-//router.post('/cart/send_order', cart.sendOrder);
-//router.post('/cart/update', cart.update);
+
 //
 //router.get('/order_history', checkAuth, user.orders);
 //

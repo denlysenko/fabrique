@@ -23,8 +23,8 @@
       <tbody>
         <% orders.forEach(function(order) { %>
       	<tr>
-	        <td class="review"><%= order.date %></td>
-	        <td class="name"><%= order.title %></td>
+	        <td class="review"><%= moment(order.createdAt).format('DD.MM.YYYY') %></td>
+	        <td class="name"><%= order.productTitle %></td>
 	        <td class="unit-price"><%= order.currency %><%= order.price %></td>
 	        <td class="quantity"><%= order.qty %></td>
 	        <td class="subtotal"><%= order.currency %>

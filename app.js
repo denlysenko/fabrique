@@ -34,6 +34,8 @@ app.use(require('./app/lib/modules/search-results/index'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./app/lib/middlewares/loadRates'));
+app.use(require('./app/lib/middlewares/loadUser'));
+app.use(require('./app/lib/middlewares/loadBasket'));
 
 require('./app/routes')(app);
 

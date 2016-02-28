@@ -5,6 +5,9 @@ module.exports = function(req, res ,next) {
 	Client.findOne({
     where: {
       email: req.session.uid
+    },
+    attributes: {
+      exclude: ['salt', 'hashedPassword']
     }
   })
       .then(function(user) {

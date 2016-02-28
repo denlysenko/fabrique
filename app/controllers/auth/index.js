@@ -4,7 +4,8 @@ var generatePassword = require('password-generator'),
     HttpError = require('../../lib/modules/errors').HttpError,
 		verifyEmail = require('../../lib/modules/email-verification'),
     async = require('async'),
-    validator = require('validator');
+    validator = require('validator'),
+    moment = require('moment');
 
 validator.extend('isNonEmpty', function(str) {
   return str !== '';
@@ -231,14 +232,47 @@ exports.subscribe = function(req, res, next) {
       });
 };
 
-exports.orders = function(req, res, next) {
+exports.getHistory = function(req, res, next) {
   var email = req.session.uid;
-  Order.find(email, function(err, rows) {
-    if(err) return next(err);
+
+  async.waterfall([
+      function(callback) {
+        models.client.findOne({
+          where: {
+            email: email
+          },
+          attributes: ['clientId']
+        })
+            .then(function(client) {
+              callback(null, client.clientId);
+            })
+            .catch(function(err) {
+              callback(err);
+            });
+      },
+      function(clientId, callback) {
+        models.order.findAll({
+          where: {
+            clientId: clientId
+          }
+        })
+            .then(function(orders) {
+              callback(null, orders);
+            })
+            .catch(function(err) {
+              callback(err);
+            });
+      }
+  ], function(err, orders) {
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
     res.render('orders', {
       title: 'Your order history',
-      orders: rows,
-      page: req.path
+      orders: orders,
+      page: req.path,
+      moment: moment
     });
   });
 };

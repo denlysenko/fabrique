@@ -35,13 +35,13 @@
         <% products.forEach(function(product) { %>
       	<tr>
 	        <td class="review">
-	          <a href="/product/<%= product.code %>" class="thumbnail">
-	          	<img src="<%= product.thumb %>" alt="<%= product.title %>">
+	          <a href="/product/<%= product.productCode %>" class="thumbnail">
+	          	<img src="<%= product.images[0].thumbUrl %>" alt="<%= product.title %>">
 	          </a>
 	        </td>
-          <input type="hidden" name="code" value="<%= product.code %>">
+          <input type="hidden" name="code" value="<%= product.productCode %>">
 	        <td class="name">
-	        	<a href="/product/<%= product.code %>"><%= product.title %></a>
+	        	<a href="/product/<%= product.productCode %>"><%= product.title %></a>
             <input type="hidden" name="title" value="<%= product.title %>">
 	        </td>
 	        <td class="unit-price"><%= currency %>
@@ -65,7 +65,7 @@
 	        </td>
 	        <td class="subtotal"><%= currency %> <span class="pr"><%= (product.price*rate*product.qty).toFixed(2) %></span></td>
 	        <td class="del">
-	        	<a href="/product/basket/<%= product.code %>" class="btn btn-del" data-action="delete"></a>
+	        	<a href="/product/basket/<%= product.productCode %>" class="btn btn-del" data-action="delete"></a>
 	        </td>
 	      </tr>
         <% }) %>

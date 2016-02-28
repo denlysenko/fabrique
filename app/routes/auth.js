@@ -22,6 +22,8 @@ module.exports = function(app) {
 
   app.route('/logout').get(auth.logout);
 
+  app.route('/order_history').get(checkAuth, auth.getHistory);
+
   app.route('/cancel_account')
 		.get(checkAuth, auth.cancelAccount)
 		.delete(auth.removeAccount);
