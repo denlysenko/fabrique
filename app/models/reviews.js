@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       {
-        timestamps: false,
+        timestamps: true,
         underscored: false,
         tableName: 'reviews'
       });

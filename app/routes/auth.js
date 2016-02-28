@@ -26,13 +26,3 @@ module.exports = function(app) {
 		.get(checkAuth, auth.cancelAccount)
 		.delete(auth.removeAccount);
 };
-
-//
-//
-//
-//
-//
-
-//
-
-//module.exports = router;

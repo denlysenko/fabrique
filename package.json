@@ -17,6 +17,7 @@
     "lodash": "^4.2.1",
     "lwip": "0.0.8",
     "method-override": "^2.3.3",
+    "moment": "^2.11.2",
     "morgan": "~1.5.3",
     "multer": "^0.1.8",
     "mysql": "2.7.0",

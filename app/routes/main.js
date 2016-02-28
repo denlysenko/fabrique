@@ -35,6 +35,8 @@ module.exports = function(app) {
       .get(auth.subscription)
       .post(auth.subscribe);
 
+  app.post('/product/review/:code', product.addReview);
+
   app.get('/delivery', main.delivery);
   app.get('/returns', main.returns);
   app.get('/terms', main.terms);

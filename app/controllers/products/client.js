@@ -2,7 +2,8 @@ var models = require('../../models'),
 		async = require('async'),
 		config = require('../../../config'),
 		HttpError = require('../../lib/modules/errors').HttpError,
-		validator = require('validator');
+		validator = require('validator'),
+    moment = require('moment');
 
 validator.extend('isNonEmpty', function(str) {
 	return str !== '';
@@ -66,6 +67,7 @@ exports.show = function(req, res, next) {
       title: product.title,
       product: product,
       related: related,
+      moment: moment,
       page: req.path
     });
   });
@@ -322,15 +324,18 @@ exports.addReview = function(req, res, next) {
 
 	if(!validator.isNonEmpty(review)) {
 		return res.status(403).json(new HttpError(403, 'Review should be filled'));
-	}		
+	}
 
-	Review.save({
-		name: name,
-		rate: rate,
-		review: review,
-		code: code
-	}, function(err) {
-		if(err) return next(err);
-		res.redirect('back');
-	});			
+  models.review.create({
+    name: name,
+    rate: rate,
+    review: review,
+    productCode: code
+  })
+      .then(function() {
+        res.redirect('back');
+      })
+      .catch(function(err) {
+        next(err);
+      });
 };

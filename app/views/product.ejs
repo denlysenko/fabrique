@@ -92,7 +92,7 @@
 	              	<% product.reviews.forEach(function(review) { %>
 	                <tr>
 	                  <td class="user"><%= review.name %></td>
-	                  <td class="review-date"><%= review.added %></td>
+	                  <td class="review-date"><%= moment(review.createdAt).format('DD.MM.YYYY') %></td>
 	                  <td class="rate"><%= review.rate %></td>
 	                  <td><%= review.review %></td>
 	                </tr>
