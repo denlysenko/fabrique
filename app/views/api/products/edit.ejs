@@ -1,0 +1,81 @@
+<%- include('../partials/header', {title: title})%>
+<div class="content">
+  <h3>Edit product</h3>
+  <hr>
+  <%- include('../../messages')%>
+  <form action="/api/products/edit/<%= product.productCode %>?_method=PUT" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label>Product Code</label>
+      <input type="text" name="code" class="form-control" value="<%= product.productCode %>" disabled>
+    </div>
+    <div class="form-group">
+      <label>Product Category</label>
+      <div class="select dropdown product">
+        <span data-toggle="dropdown">
+          <input type="text" class="form-control" name="product[category]" value="<%= product.category %>">
+        </span>
+        <ul class="dropdown-menu">
+          <li><a href="#">Flooring</a></li>
+          <li><a href="#">Curtains</a></li>
+          <li><a href="#">Bedding</a></li>
+        </ul>
+      </div> 
+    </div>
+    <div class="form-group">
+      <label>Product Title</label>
+      <input type="text" name="product[title]" class="form-control" value="<%= product.title %>">
+    </div>
+    <div class="form-group">
+      <label>Product Description</label>
+      <textarea name="product[desc]" class="form-control" rows="10"><%= product.desc %></textarea>
+    </div>
+    <div class="form-group">
+      <label>Product Information</label>
+      <textarea name="product[info]" class="form-control" rows="10"><%= product.info %></textarea>
+    </div>
+    <div class="form-group">
+      <label>Data Sheet</label>
+      <%if(product.dataSheet.length){ %>
+      <%product.dataSheet.forEach(function(feature){ %>
+        <div class="fields">
+          <input type="text" class="form-control" value="<%= feature.feature %>" disabled="true" name="feature">
+          <textarea class="form-control" name="characteristic" placeholder="Characteristic" disabled="true"><%= feature.characteristic %></textarea>
+        </div>          
+        <a href="/api/products/delete_feature/<%= feature.id %>" class="btn btn-default" data-action="delete">Remove Feature</a>
+      <% })} else {%>
+        <div class="fields">
+          <input type="text" class="form-control" name="feature" placeholder="Feature">
+          <textarea class="form-control" name="characteristic" placeholder="Characteristic"></textarea>
+        </div>
+      <% } %>  
+      <button type="button" class="btn btn-default new-field">New Feature</button>
+    </div>
+    <div class="form-group">
+      <label>Product Price</label>
+      <input type="number" step="0.01" name="product[price]" class="form-control" value="<%= product.price %>" min="0">
+    </div>
+    <div class="form-group">
+      <label>Product Photo</label>
+      <ul class="photo-list">
+        <% if(product.images && product.images.length) { %>
+        <%product.images.forEach(function(image){ %>
+          <li>
+            <img src="<%= image.thumbUrl %>" height="130" width="241" alt="<%= product.title %>">
+            <div class="hover" style="display:none"><a href="/api/products/delete_image/<%= image.id %>" role="button" class="close" data-action="delete"><span>&times;</span></a></div>
+          </li>
+        <%})%>
+        <%}%>
+      </ul>
+      <div class="fields">
+        <input type="file" name="photo" class="form-control">
+      </div>
+      <button type="button" class="btn btn-default new-field">New Photo</button>
+    </div>
+    <hr>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Edit Product</button>
+      <a href="/api/products/remove/<%= product.productCode %>" class="btn btn-default" data-action="delete">Remove Product</a>
+    </div>
+  </form> 
+</div>
+<%- include('../partials/footer')%>

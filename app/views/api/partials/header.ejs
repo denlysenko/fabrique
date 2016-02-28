@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link href="/css/common.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body> 
+    <div class="container">
+      <header>
+        <h1 class="logo">
+          <a href="/">Fabrique<small>Fine furnishings</small></a>
+        </h1>
+        <div class="logged-user">
+          <%= locals.manager %> is LOGGED IN
+          <a href="/api/logout">LOG OUT</a>
+        </div>
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="main-nav">
+            <ul class="nav navbar-nav">
+              <li><a href="/api">Admin panel</a></li>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Managers <span class="caret">˅</span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/api/manager">Add manager</a></li>
+                  <li><a href="/api/manager">Remove manager</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <span class="caret">˅</span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/api/products/add">Add product</a></li>
+                  <li><a href="/api/products/edit">Edit product</a></li>
+                  <li><a href="/api/slider">Add Products for slider</a></li>
+                  <li><a href="/api/slider_remove">Remove Products from slider</a></li>
+                  <li><a href="/api/sale">Add Products on sale</a></li>
+                  <li><a href="/api/sale_remove">Remove Products from sale</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Discount Cards <span class="caret">˅</span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/api/discounts">Add card</a></li>
+                  <li><a href="/api/discounts">Remove card</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>

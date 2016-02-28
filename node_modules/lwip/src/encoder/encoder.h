@@ -23,14 +23,14 @@ using namespace v8;
 using namespace node;
 using namespace std;
 
-class EncodeToJpegBufferWorker : public NanAsyncWorker {
+class EncodeToJpegBufferWorker : public Nan::AsyncWorker {
 public:
     EncodeToJpegBufferWorker(
         Local<Object> & buff,
         size_t width,
         size_t height,
         int quality,
-        NanCallback * callback
+        Nan::Callback * callback
     );
     ~EncodeToJpegBufferWorker();
     void Execute ();
@@ -44,7 +44,7 @@ private:
     size_t _jpegbufsize;
 };
 
-class EncodeToPngBufferWorker : public NanAsyncWorker {
+class EncodeToPngBufferWorker : public Nan::AsyncWorker {
 public:
     EncodeToPngBufferWorker(
         Local<Object> & buff,
@@ -53,7 +53,8 @@ public:
         int compression,
         bool interlaced,
         bool trans,
-        NanCallback * callback
+        char * metadata,
+        Nan::Callback * callback
     );
     ~EncodeToPngBufferWorker();
     void Execute ();
@@ -65,11 +66,12 @@ private:
     int _compression;
     bool _interlaced;
     bool _trans;
+    char * _metadata;
     char * _pngbuf;
     size_t _pngbufsize;
 };
 
-class EncodeToGifBufferWorker : public NanAsyncWorker {
+class EncodeToGifBufferWorker : public Nan::AsyncWorker {
 public:
     EncodeToGifBufferWorker(
         Local<Object> & buff,
@@ -80,7 +82,7 @@ public:
         bool interlaced,
         bool trans,
         int threshold,
-        NanCallback * callback
+        Nan::Callback * callback
     );
     ~EncodeToGifBufferWorker();
     void Execute ();

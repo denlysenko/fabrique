@@ -1,0 +1,37 @@
+<%- include('../partials/header', {title: title})%>
+<div class="content">
+  <h3>Remove Products from sale</h3>
+  <hr>
+  <%- include('../../messages')%>
+  <div class="table-responsive">
+    <table class="table edit">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Current Price</th>
+          <th>Old Price</th>
+          <th>Discount</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+  <% results.forEach(function(result){%>
+      <tr>
+        <td><%= result.productCode %></td>
+        <td><%= result.title %></td>
+        <td><%= result.newPrice %></td>
+        <td><%= result.oldPrice %></td>
+        <td><%= result.discount %></td>
+        <td>
+          <a href="/api/sale_remove/<%= result.id %>" data-action="delete">Remove From Sale</a>
+        </td>
+      </tr>
+  <%})%>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+  
+</div>
+<%- include('../partials/footer')%>

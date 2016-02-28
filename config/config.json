@@ -1,0 +1,28 @@
+{
+  "db": {
+    "url": "mysql://denis:admin@localhost:3306/fabrique-dev"
+  },
+  "session": {
+    "saveUninitialized": true,
+    "resave": true,
+    "secret": "Fabrique"
+  },
+  "mailer": {
+    "service": "gmail",
+    "auth": {
+      "user": "denny.lysenko@gmail.com",
+      "pass": "0502269512"
+    }
+  },
+  "thumbs": {
+    "width": 198,
+    "height": 150
+  },
+  "images": {
+    "width": 315,
+    "height": 271
+  },
+  "recipient": {
+    "email": "denny.lysenko@gmail.com"
+  }
+}

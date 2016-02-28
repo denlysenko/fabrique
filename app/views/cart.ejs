@@ -1,0 +1,102 @@
+<%- include('partials/header')%>
+<div class="content">
+	<ol class="breadcrumb">
+    <li>
+      <a href="/">Home</a>
+    </li>
+    <li class="active">Basket</li>
+  </ol>
+  <div class="basket-top">
+    <div class="col-l">
+      <h3><%= title %></h3>
+      <hr>
+      <%- include('messages') %>
+      <div class="helper"></div>
+    </div>
+    <aside>
+      <a href="/cart/checkout" class="btn btn-bag" data-action="checkout" role="button" <% if(!products || !products.length) { %> disabled <% } %>>Proceed to checkout</a>
+      <a href="/">Continue Shopping &gt;</a>
+    </aside>
+  </div>
+  <% if(products && products.length) { %>
+  <div class="table-responsive">
+    <table class="table cart">
+      <thead>
+        <tr>
+          <th>preview</th>
+          <th>product name</th>
+          <th>unit price</th>
+          <th>quantity</th>
+          <th>subtotal</th>
+          <th>del</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(function(product) { %>
+      	<tr>
+	        <td class="review">
+	          <a href="/product/<%= product.productCode %>" class="thumbnail">
+	          	<img src="<%= product.images[0].thumbUrl %>" alt="<%= product.title %>">
+	          </a>
+	        </td>
+          <input type="hidden" name="code" value="<%= product.productCode %>">
+	        <td class="name">
+	        	<a href="/product/<%= product.productCode %>"><%= product.title %></a>
+            <input type="hidden" name="title" value="<%= product.title %>">
+	        </td>
+	        <td class="unit-price"><%= currency %>
+            <span class="pr"><%= (product.price*rate).toFixed(2) %></span>
+            <input type="hidden" name="price" value="<%= (product.price*rate).toFixed(2) %>">
+            <input type="hidden" value="<%= currency %>" name="currency">
+          </td>
+	        <td class="quantity">
+	          <div class="select dropdown">
+	            <span data-toggle="dropdown">
+	              <input type="text" class="form-control" value="<%= product.qty %>" name="quantity">
+	            </span>
+	            <ul class="dropdown-menu">
+	              <li><a href="#">1</a></li>
+	              <li><a href="#">2</a></li>
+	              <li><a href="#">3</a></li>
+	              <li><a href="#">4</a></li>
+	              <li><a href="#">5</a></li>
+	            </ul>
+	         </div> 
+	        </td>
+	        <td class="subtotal"><%= currency %> <span class="pr"><%= (product.price*rate*product.qty).toFixed(2) %></span></td>
+	        <td class="del">
+	        	<a href="/product/basket/<%= product.productCode %>" class="btn btn-del" data-action="delete"></a>
+	        </td>
+	      </tr>
+        <% }) %>
+      </tbody>
+    </table>  	
+  </div>
+  <div class="basket-bottom">
+    <div class="col-l">
+      <hr>
+      <div class="order-details">
+        <h4>your total order details: </h4>
+          <form action="/cart/check_discount" name="discount-card" method="post">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Discount Code.." name="discount">
+              <button type="submit" class="btn btn-submit" data-toggle="tooltip"></button>
+            </div>
+          </form>
+        <div class="update-basket">
+          <a href="/cart/update" class="btn btn-update disabled">Update Basket</a>
+        </div>
+      </div>
+    </div>
+    <aside>
+      <div class="total-order">
+        Total: <span class="total"><%= currency %><span class="pr"></span></span>
+      </div>
+      <a href="/cart/checkout" class="btn btn-bag" data-action="checkout">Proceed to checkout</a>
+      <a href="/">Continue Shopping &gt;</a>
+    </aside>
+  </div>
+  <hr>
+  <% } %>
+</div>
+<%- include('partials/footer')%>

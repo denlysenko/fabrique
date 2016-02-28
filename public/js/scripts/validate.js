@@ -13,7 +13,7 @@
 			var msg = $input.attr('placeholder');
 			$input.tooltip({title: msg + ' should contain letters', placement: 'right', trigger: 'manual'});	
 			if(!validator.isAlpha($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -23,7 +23,7 @@
 			var msg = $input.attr('placeholder');
 			$input.tooltip({title: msg + ' should contain letters', placement: 'right', trigger: 'manual'});	
 			if(!validator.isNonEmpty($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -33,7 +33,7 @@
 			var msg = $input.attr('placeholder');
 			$input.tooltip({title: msg + ' should contain letters or numbers', placement: 'right', trigger: 'manual'});	
 			if(!validator.isAlphanumeric($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -43,7 +43,7 @@
 			var msg = $input.attr('placeholder');
 			$input.tooltip({title: msg + ' should contain letters or numbers', placement: 'right', trigger: 'manual'});	
 			if(!validator.isAlphanumeric($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -53,7 +53,7 @@
 			var msg = 'Type correct e-mail';
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.isEmail($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -63,7 +63,7 @@
 			var msg = 'Type phone number as (xxx) xxx xxxx';
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.matches($input.val(), /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -73,7 +73,7 @@
 			var msg = 'Type acc number as xxxxxxxx';
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.matches($input.val(), /\d{8}/)) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -83,7 +83,7 @@
 			var msg = 'Discount should be in the range 1 - 99';
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.isInt($input.val(), {min: 1, max: 99})) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -93,7 +93,7 @@
 			var msg = 'Enter password';
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.matches($input.val(), /\S+/)) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -103,7 +103,7 @@
 			var msg = "This field doesn't match password";
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.equals($input.val(), $('[name="passwd"]').val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -113,7 +113,7 @@
 			var msg = "Type Exchange Rate as x.xx";
 			$input.tooltip({title: msg, placement: 'top', trigger: 'manual'});	
 			if(!validator.isFloat($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}
@@ -123,7 +123,7 @@
 			var msg = "Type Price as x.xx";
 			$input.tooltip({title: msg, placement: 'right', trigger: 'manual'});	
 			if(!validator.isFloat($input.val())) {
-				$input.closest('div').addClass('has-error');
+				$input.closest('div').addClass('has-errors');
 				$input.tooltip('show');
 				return false;
 			}

@@ -1,0 +1,18 @@
+<div class="new-products">
+  <h3>featured products</h3>
+  <% if(locals.mostViewed){ %>
+  <% mostViewed.forEach(function(product){ %>
+  <div class="product-unit">
+    <a href="/product/<%= product.productCode %>" class="thumbnail <% if(product.sale !== 0){ %> sale-<%= product.sale %><% } %>">
+      <img src="<%= product.images[0].thumbUrl %>" alt="<%= product.title %>">
+    </a>
+    <div class="caption">
+      <h4><%= product.title %> <span class="price"><%= currency %> <%= (product.price*rate).toFixed(2) %></span>
+      </h4>
+      <p><%= product.desc %></p>
+      <a href="/product/<%= product.productCode %>" class="btn btn-default" role="button">View</a>
+      <a href="/product/basket/<%= product.productCode %>" class="btn btn-default" role="button" data-action="add-to-basket">Add to Basket</a>
+    </div>
+  </div>
+  <% })} %>
+</div>  

@@ -12,7 +12,7 @@ var multer = require('multer');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './app/views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -25,33 +25,34 @@ app.use(multer({
   rename: function(fieldname, filename) {
     return filename;
   }
-}))
+}));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(session(config.get('session')));
-app.use(require('./lib/messages'));
-app.use(require('./lib/results'));
+app.use(require('./app/lib/modules/messages/index'));
+app.use(require('./app/lib/modules/search-results/index'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(require('./lib/middleware/loadRates'));
+app.use(require('./app/lib/middlewares/loadRates'));
+app.use(require('./app/lib/middlewares/loadUser'));
+app.use(require('./app/lib/middlewares/loadBasket'));
 
-app.use('/api', require('./routes/api/routes'));
-app.use('/', require('./routes/index'));
-app.use('/product', require('./routes/product'));
+require('./app/routes')(app);
 
-// catch 404 and forward to error handler
+// catch 404 and forward to errors handler
 app.use(function(req, res, next) {
   var err = new Error('Page Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handlers
+// errors handlers
 
-// development error handler
+// development errors handler
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log(err);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -62,7 +63,7 @@ if (app.get('env') === 'development') {
   });
 }
 
-// production error handler
+// production errors handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
