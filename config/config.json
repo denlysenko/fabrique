@@ -1,6 +1,6 @@
 {
   "db": {
-    "url": "mysql://denis:admin@localhost:3306/fabrique-dev"
+    "url": "****"
   },
   "session": {
     "saveUninitialized": true,
