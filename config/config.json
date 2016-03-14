@@ -10,8 +10,8 @@
   "mailer": {
     "service": "gmail",
     "auth": {
-      "user": "denny.lysenko@gmail.com",
-      "pass": "0502269512"
+      "user": "****",
+      "pass": "****"
     }
   },
   "thumbs": {
